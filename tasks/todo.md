@@ -20,10 +20,10 @@
 - [x] `docker-compose up` khởi chạy thành công 4 services (Caddy, Frontend Next.js, Backend FastAPI, Postgres - Đã test thực tế 200 OK qua Caddy Reverse Proxy).
 - [x] CI pipeline Pass màu xanh khi tạo PR trên GitHub (Đã vượt qua toàn bộ 5/5 cổng kiểm định trên GitHub Actions).
 
-### [TODO] Task 3: Spike/PoC - Web Worker SQL
+### [DONE] Task 3: Spike/PoC - Web Worker SQL
 **Description:** Lập trình nháp luồng đưa `sql.js` (SQLite WASM) vào Web Worker.
 **Acceptance criteria:**
-- [ ] Nhận truy vấn `SELECT 1` và trả về mảng kết quả qua `postMessage` dưới 50ms.
+- [x] Nhận truy vấn `SELECT 1` và trả về mảng kết quả qua `postMessage` dưới 50ms (Đã kiểm thử thực tế đạt ~1-5ms).
 
 ### [TODO] Task 4: Spike/PoC - FastAPI ONNX Inference
 **Description:** API endpoint dùng `onnxruntime` load model random và chạy mồi.

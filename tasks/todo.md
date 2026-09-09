@@ -9,16 +9,16 @@
 
 ## 📌 PHASE 1: Triệt Tiêu Rủi Ro & Hạ Tầng
 
-### [TODO] Task 1: Khởi tạo Base Project, Git Workflow & CONSTRAINTS
+### [DONE] Task 1: Khởi tạo Base Project, Git Workflow & CONSTRAINTS
 **Description:** Setup repository trống với FastAPI, Next.js. Cài đặt toàn bộ linter, test runner. Thiết lập **Husky + lint-staged**.
 **Acceptance criteria:**
-- [ ] Gõ `git commit` tự động trigger Husky chạy pre-commit checks.
+- [x] Gõ `git commit` tự động trigger Husky chạy pre-commit checks.
 
-### [TODO] Task 2: Thiết lập Docker Compose & CI/CD GitHub Actions
+### [IN PROGRESS] Task 2: Thiết lập Docker Compose & CI/CD GitHub Actions
 **Description:** Đóng gói ứng dụng thành Micro-Containerized (Caddy, NextJS, FastAPI, Postgres). Viết workflow CI 5 cổng.
 **Acceptance criteria:**
-- [ ] `docker-compose up` khởi chạy thành công 4 services.
-- [ ] CI pipeline Pass màu xanh khi tạo PR.
+- [x] `docker-compose up` khởi chạy thành công 4 services (Caddy, Frontend Next.js, Backend FastAPI, Postgres - Đã test thực tế 200 OK qua Caddy Reverse Proxy).
+- [ ] CI pipeline Pass màu xanh khi tạo PR trên GitHub (Cần mở PR để kích hoạt Actions).
 
 ### [TODO] Task 3: Spike/PoC - Web Worker SQL
 **Description:** Lập trình nháp luồng đưa `sql.js` (SQLite WASM) vào Web Worker.

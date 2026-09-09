@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "lms-backend"
+version = "0.1.0"
+description = "Adaptive Learning SQL Backend"
+authors = ["Admin"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+exclude = [".git", ".venv", "migrations", "__pycache__"]
+src = ["backend", "backend/app", "app"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q --cov=app --cov-report=term-missing"
+testpaths = [
+    "tests",
+]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+exclude = ["migrations"]

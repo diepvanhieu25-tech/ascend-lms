@@ -15,6 +15,14 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
+import sys
+from pathlib import Path
+
+# Ensure backend directory is in sys.path so app modules are resolvable
+backend_dir = str(Path(__file__).resolve().parent.parent)
+if backend_dir not in sys.path:
+    sys.path.insert(0, backend_dir)
+
 import app.models  # noqa: F401
 from app.core.config import settings
 from app.db.base import Base

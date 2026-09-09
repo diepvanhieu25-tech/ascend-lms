@@ -8,6 +8,7 @@ authors = ["Admin"]
 line-length = 100
 target-version = "py310"
 exclude = [".git", ".venv", "migrations", "__pycache__"]
+force-exclude = true
 src = ["backend", "backend/app", "app"]
 
 [tool.ruff.lint.isort]
@@ -19,6 +20,7 @@ addopts = "-ra -q --cov=app --cov-report=term-missing"
 testpaths = [
     "tests",
 ]
+asyncio_mode = "auto"
 
 [tool.mypy]
 strict = true

@@ -18,7 +18,7 @@ Dự án LMS Cá nhân hóa với SQL (Đồ án 15 tuần). Việc lập kế h
 - [x] Task 4: Spike/PoC - API FastAPI load file `.onnx` và trả về kết quả Inference.
 
 ### Phase 2: Logic Lõi & Chấm Điểm (Tuần 3-5)
-- [ ] Task 5: Dựng Database Schema & Alembic (Đầy đủ các bảng Telemetry, Diagnostic, SpotCheck).
+- [x] Task 5: Dựng Database Schema & Alembic (Đầy đủ các bảng Telemetry, Diagnostic, SpotCheck).
 - [ ] Task 6: Module parse đồ thị DAG & Thuật toán lan truyền tiên quyết ($s_0$).
 - [ ] Task 7: Trình chấm điểm AST (`sqlglot`) và `EXPLAIN QUERY PLAN`.
 

@@ -37,10 +37,10 @@
 
 ## 📌 PHASE 2: Logic Lõi & Chấm Điểm Cơ Sở
 
-### [TODO] Task 5: Dựng Database Schema & Alembic
+### [DONE] Task 5: Dựng Database Schema & Alembic
 **Description:** Viết ORM Models bao quát ĐẦY ĐỦ các bảng (bao gồm `TELEMETRY_LOG`, `SPOT_CHECK`, `DIAGNOSTIC_ASSESSMENT`).
 **Acceptance criteria:**
-- [ ] Chạy `alembic upgrade head` tạo thành công DB.
+- [x] Chạy `alembic upgrade head` tạo thành công DB (Đã áp dụng migration `9df090091b69` thành công trên PostgreSQL, 10 bảng quan hệ đầy đủ foreign key cascades và indexes, test coverage 97%).
 
 ### [TODO] Task 6: Module Knowledge Graph & Lan truyền DAG
 **Description:** Parse `knowledge_graph.json`. Viết thuật toán khởi tạo vector $s_0$ dựa trên 5-7 câu trả lời đầu vào (Prerequisite Propagation).

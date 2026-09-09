@@ -1,0 +1,20 @@
+{
+  "name": "ascend-lms-root",
+  "private": true,
+  "scripts": {
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "husky": "^8.0.0",
+    "lint-staged": "^15.2.0"
+  },
+  "lint-staged": {
+    "frontend/**/*.{ts,tsx,js,jsx}": [
+      "npx --prefix frontend eslint"
+    ],
+    "backend/**/*.py": [
+      "ruff check --config backend/pyproject.toml",
+      "ruff format --check --config backend/pyproject.toml"
+    ]
+  }
+}

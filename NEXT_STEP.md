@@ -17,7 +17,7 @@ Khi mở một phiên chat mới với Antigravity, bạn chỉ cần copy nguy�
 
 ## 📌 Tóm Tắt Nhanh Điểm Dừng Hiện Tại (Checkpoint)
 
-* **Trạng thái:** HOÀN THIỆN ĐẶC TẢ & KẾ HOẠCH. Hệ thống đã có trọn bộ tài liệu Spec (bao gồm cả CI/CD, Git Workflow), ràng buộc chất lượng `CONSTRAINTS.md`, và danh sách công việc rõ ràng tại `tasks/todo.md`.
+* **Trạng thái:** HOÀN THIỆN ĐẶC TẢ & KẾ HOẠCH. Hệ thống đã có trọn bộ tài liệu Spec (bao gồm cả CI/CD, Git Workflow), ràng buộc chất lượng `CONSTRAINTS.md`, và danh sách công việc rõ ràng tại `tasks/todo.md`. Repository local đã được link với remote Github (`https://github.com/diepvanhieu25-tech/ascend-lms.git`).
 * **Tài liệu cốt lõi đã hoàn thiện chuẩn xác 100%:**
   - File điều phối tổng & Handoff: [`SESSION_HANDOFF.md`](file:///home/diepvanhieu/workspace/adaptive-learning-sql/SESSION_HANDOFF.md)
   - Hồ sơ Đề cương ĐATN chuẩn form: [`PHU LUC 02_De cuong DATN.md`](file:///home/diepvanhieu/workspace/adaptive-learning-sql/PHU%20LUC%2002_De%20cuong%20DATN.md)

@@ -26,6 +26,8 @@ htmlcov/
 .venv/
 venv/
 ENV/
+.mypy_cache/
+.ruff_cache/
 
 # Node
 node_modules/
@@ -37,6 +39,7 @@ dist/
 .next/
 out/
 .turbo
+*.tsbuildinfo
 
 # IDE
 .idea/

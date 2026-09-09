@@ -69,7 +69,7 @@
 
 ## 3. Trạng Thái Hiện Tại & Điểm Dừng (Current Checkpoint)
 
-- **Trạng thái:** HOÀN TẤT KẾ HOẠCH (Planning Complete). Toàn bộ 8 module specifications, hợp đồng cam kết chất lượng `CONSTRAINTS.md` và kế hoạch thực thi 6 phase (`tasks/plan.md`, `tasks/todo.md`) đã sẵn sàng.
+- **Trạng thái:** HOÀN TẤT KẾ HOẠCH (Planning Complete). Toàn bộ 8 module specifications, hợp đồng cam kết chất lượng `CONSTRAINTS.md` và kế hoạch thực thi 6 phase (`tasks/plan.md`, `tasks/todo.md`) đã sẵn sàng. Mã nguồn đã được kết nối với repository Github.
 - **Các điểm đột phá đã tích hợp:**
   1. Bộ đánh giá năng lực đầu vào (Adaptive Placement Test & Calibration Mini-Check 30s) giải quyết bài toán Cold-Start và Dunning-Kruger.
   2. Kiến trúc Sandbox SQLite WASM client-side tải 500-1.000 CCU không nghẽn Server.

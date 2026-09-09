@@ -151,8 +151,11 @@ export default function SQLitePoCPage() {
     if (!isReady) return;
     setLoading(true);
     try {
-      await runQuery(PRESETS[0].sql, SAMPLE_DDL, SAMPLE_SEED);
+      const initRes = await runQuery(PRESETS[0].sql, SAMPLE_DDL, SAMPLE_SEED);
+      setResult(initRes);
       setDbInitialized(true);
+    } catch (err) {
+      console.error('Failed to initialize sample database:', err);
     } finally {
       setLoading(false);
     }

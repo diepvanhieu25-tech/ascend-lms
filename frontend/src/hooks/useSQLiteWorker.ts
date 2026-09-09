@@ -21,6 +21,8 @@ export function useSQLiteWorker() {
     worker.onmessage = (event: MessageEvent) => {
       if (event.data.type === 'READY') {
         setIsReady(true);
+      } else if (event.data.type === 'ERROR') {
+        console.error('SQLite Worker Init Error:', event.data.error);
       }
     };
 

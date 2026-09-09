@@ -1,0 +1,5 @@
+node_modules
+.next
+*.png
+test-poc-browser.js
+debug-browser.js

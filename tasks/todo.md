@@ -17,8 +17,8 @@
 ### [IN PROGRESS] Task 2: Thiết lập Docker Compose & CI/CD GitHub Actions
 **Description:** Đóng gói ứng dụng thành Micro-Containerized (Caddy, NextJS, FastAPI, Postgres). Viết workflow CI 5 cổng.
 **Acceptance criteria:**
-- [ ] `docker-compose up` khởi chạy thành công 4 services (Cần Docker trên môi trường/máy chủ).
-- [ ] CI pipeline Pass màu xanh khi tạo PR trên GitHub.
+- [x] `docker-compose up` khởi chạy thành công 4 services (Caddy, Frontend Next.js, Backend FastAPI, Postgres - Đã test thực tế 200 OK qua Caddy Reverse Proxy).
+- [ ] CI pipeline Pass màu xanh khi tạo PR trên GitHub (Cần mở PR để kích hoạt Actions).
 
 ### [TODO] Task 3: Spike/PoC - Web Worker SQL
 **Description:** Lập trình nháp luồng đưa `sql.js` (SQLite WASM) vào Web Worker.

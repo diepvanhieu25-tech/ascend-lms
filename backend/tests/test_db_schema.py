@@ -13,24 +13,13 @@ from sqlalchemy.ext.asyncio import (
 )
 from sqlalchemy.pool import NullPool
 
-import app.models  # noqa: F401
 from app.core.config import settings
-from app.db.base import Base
 from app.models.concept import Concept, Prerequisite
 from app.models.diagnostic import DiagnosticAssessment
 from app.models.exercise import Exercise, Submission
 from app.models.spot_check import SpotCheck, SpotCheckAttempt
 from app.models.student import CognitiveState, Student
 from app.models.telemetry import TelemetryLog
-
-
-@pytest_asyncio.fixture(scope="session", autouse=True)
-async def setup_test_database() -> AsyncGenerator[None, None]:
-    engine = create_async_engine(settings.DATABASE_URL, poolclass=NullPool)
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-    yield
-    await engine.dispose()
 
 
 @pytest_asyncio.fixture

@@ -12,10 +12,10 @@ Dự án LMS Cá nhân hóa với SQL (Đồ án 15 tuần). Việc lập kế h
 ## Task List
 
 ### Phase 1: Triệt Tiêu Rủi Ro (High-Risk Spikes) - Tuần 1-2
-- [ ] Task 1: Khởi tạo Base Project, Git Workflow (Husky/Lint-staged) & `CONSTRAINTS.md`.
-- [ ] Task 2: Thiết lập Docker Compose & luồng CI/CD GitHub Actions (Quality Gates).
-- [ ] Task 3: Spike/PoC - Chạy `sql.js` bên trong Web Worker của React.
-- [ ] Task 4: Spike/PoC - API FastAPI load file `.onnx` và trả về kết quả Inference.
+- [x] Task 1: Khởi tạo Base Project, Git Workflow (Husky/Lint-staged) & `CONSTRAINTS.md`.
+- [x] Task 2: Thiết lập Docker Compose & luồng CI/CD GitHub Actions (Quality Gates).
+- [x] Task 3: Spike/PoC - Chạy `sql.js` bên trong Web Worker của React.
+- [x] Task 4: Spike/PoC - API FastAPI load file `.onnx` và trả về kết quả Inference.
 
 ### Phase 2: Logic Lõi & Chấm Điểm (Tuần 3-5)
 - [ ] Task 5: Dựng Database Schema & Alembic (Đầy đủ các bảng Telemetry, Diagnostic, SpotCheck).

@@ -13,3 +13,5 @@ pytest-cov>=4.1.0
 ruff>=0.1.5
 mypy>=1.7.0
 httpx>=0.25.1
+numpy>=1.26.0
+onnxruntime>=1.16.0

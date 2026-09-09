@@ -12,6 +12,11 @@ app.add_middleware(
 )
 
 
+from app.api.v1.endpoints import poc_onnx
+
+app.include_router(poc_onnx.router, prefix="/api/v1")
+
+
 @app.get("/api/v1/health")
 async def health_check() -> dict[str, str]:
     return {"status": "ok"}

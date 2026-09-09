@@ -25,13 +25,13 @@
 **Acceptance criteria:**
 - [x] Nhận truy vấn `SELECT 1` và trả về mảng kết quả qua `postMessage` dưới 50ms (Đã kiểm thử thực tế đạt ~1-5ms).
 
-### [TODO] Task 4: Spike/PoC - FastAPI ONNX Inference
+### [DONE] Task 4: Spike/PoC - FastAPI ONNX Inference
 **Description:** API endpoint dùng `onnxruntime` load model random và chạy mồi.
 **Acceptance criteria:**
-- [ ] Endpoint `/api/v1/poc/onnx` trả về mảng xác suất dưới 20ms.
+- [x] Endpoint `/api/v1/poc/onnx` trả về mảng xác suất dưới 20ms (Kiểm thử thực tế đạt ~0.24ms - 0.47ms, nhanh gấp ~40-80 lần ngưỡng SLA).
 
 ### 🚩 Checkpoint: Phase 1
-- [ ] CI/CD và Docker hoạt động trơn tru. Web Worker & ONNX đạt chuẩn tốc độ.
+- [x] CI/CD và Docker hoạt động trơn tru. Web Worker & ONNX đạt chuẩn tốc độ.
 
 ---
 

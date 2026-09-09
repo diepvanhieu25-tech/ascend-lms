@@ -14,11 +14,11 @@
 **Acceptance criteria:**
 - [x] Gõ `git commit` tự động trigger Husky chạy pre-commit checks.
 
-### [IN PROGRESS] Task 2: Thiết lập Docker Compose & CI/CD GitHub Actions
+### [DONE] Task 2: Thiết lập Docker Compose & CI/CD GitHub Actions
 **Description:** Đóng gói ứng dụng thành Micro-Containerized (Caddy, NextJS, FastAPI, Postgres). Viết workflow CI 5 cổng.
 **Acceptance criteria:**
 - [x] `docker-compose up` khởi chạy thành công 4 services (Caddy, Frontend Next.js, Backend FastAPI, Postgres - Đã test thực tế 200 OK qua Caddy Reverse Proxy).
-- [ ] CI pipeline Pass màu xanh khi tạo PR trên GitHub (Cần mở PR để kích hoạt Actions).
+- [x] CI pipeline Pass màu xanh khi tạo PR trên GitHub (Đã vượt qua toàn bộ 5/5 cổng kiểm định trên GitHub Actions).
 
 ### [TODO] Task 3: Spike/PoC - Web Worker SQL
 **Description:** Lập trình nháp luồng đưa `sql.js` (SQLite WASM) vào Web Worker.

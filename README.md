@@ -2,262 +2,274 @@
 
 # 🚀 Ascend LMS — "Rise Above Limits"
 
-**Nền Tảng Quản Lý & Khuyến Nghị Lộ Trình Học Tập Thích Ứng (Adaptive Learning) Cho Môn SQL**  
-*Ứng dụng Mô hình Học Tăng Cường (Reinforcement Learning) & Môi trường Thực thi WASM Zero-Latency*
+**Adaptive Learning Management System for SQL & Database Education**  
+*Powered by Two-Stage Reinforcement Learning & Client-Side Zero-Latency WASM Sandbox*
 
 [![CI/CD Pipeline](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions%20(5%20Gates)-success?style=for-the-badge&logo=githubactions)](.github/workflows/ci.yml)
 [![Docker](https://img.shields.io/badge/Docker-Compose%20Ready-2496ED?style=for-the-badge&logo=docker)](docker-compose.yml)
 [![Next.js 14](https://img.shields.io/badge/Next.js-14%20(App%20Router)-black?style=for-the-badge&logo=next.js)](frontend/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Python%203.10%2B-009688?style=for-the-badge&logo=fastapi)](backend/)
 [![SQLite WASM](https://img.shields.io/badge/SQLite-WASM%20%2F%20Web%20Worker-003B57?style=for-the-badge&logo=sqlite)](frontend/public/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0%2B-3178C6?style=for-the-badge&logo=typescript)](frontend/)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
-[Tổng Quan](#-tổng-quan-dự-án) • [Tính Năng Nổi Bật](#-tính-năng-nổi-bật) • [Kiến Trúc Hệ Thống](#-kiến-trúc-hệ-thống) • [Công Nghệ Sử Dụng](#-công-nghệ-sử-dụng) • [Khởi Chạy Nhanh](#-hướng-dẫn-khởi-chạy-quickstart) • [Cấu Trúc Dự Án](#-cấu-trúc-thư-mục-monorepo) • [Kế Hoạch Phát Triển](#-kế-hoạch-phát-triển-roadmap)
+[Overview](#-project-overview) • [Key Features](#-key-features) • [System Architecture](#-system-architecture) • [Tech Stack](#-technology-stack) • [Quickstart](#-getting-started-quickstart) • [Project Structure](#-monorepo-structure) • [Quality Gates](#-quality-gates--cicd) • [Roadmap](#-development-roadmap)
 
 ---
 
 </div>
 
-## 📌 Tổng Quan Dự Án
+## 📌 Project Overview
 
-**Ascend LMS** là hệ thống học tập cá nhân hóa thông minh chuyên sâu cho môn Cơ sở dữ liệu và Truy vấn SQL. Dự án được nghiên cứu và phát triển theo định hướng **Đồ án Tốt nghiệp Xuất sắc**: kết hợp chặt chẽ giữa **Nền tảng Toán học/AI vững chắc**, **Sản phẩm Web LMS thực tế có thể mở rộng** và **Trải nghiệm người dùng Zero-Friction**.
+**Ascend LMS** is an intelligent, personalized, and adaptive learning platform designed for Database Management and SQL mastery. Developed as a Capstone Graduation Thesis project in Computer Science, Ascend LMS bridges **rigorous mathematical/cognitive AI modeling**, **production-grade web engineering**, and **zero-friction user experience**.
 
-Khác biệt hoàn toàn với các nền tảng học truyền thống (lộ trình cố định, phản hồi chậm, dễ bị gian lận bởi GenAI), Ascend LMS giải quyết triệt để 3 bài toán:
-1. **Lộ trình cá nhân hóa động theo từng học viên:** Kết hợp mô hình nhận thức người học (**Bayesian Knowledge Tracing - BKT**) và **Đường cong quên lãng Ebbinghaus** với mô hình **Học tăng cường (Reinforcement Learning - MaskablePPO)** để tự động đề xuất bài học, bài tập và phiên ôn tập ngắt quãng (Spaced Repetition) tối ưu.
-2. **Thực thi SQL tức thời không tốn tài nguyên máy chủ:** Tận dụng công nghệ **SQLite WASM Web Worker** ngay trên trình duyệt client, giảm độ trễ thực thi xuống **< 50ms** (thực tế ~1ms), chịu tải hàng nghìn người dùng đồng thời mà không tạo gánh nặng máy chủ tính toán.
-3. **Phòng vệ chống gian lận trong kỷ nguyên GenAI:** Tích hợp bộ chấm ngữ nghĩa **Abstract Syntax Tree (AST)** bằng `sqlglot` (chặn hardcode, bắt buộc dùng chỉ mục Index/JOIN hợp lệ) cùng cơ chế giám sát **Telemetry 0ms Paste & Spot-Check Calibration**.
+Unlike conventional learning management systems with static linear curricula, slow server-side code execution, and vulnerability to GenAI copy-pasting, Ascend LMS addresses three fundamental engineering challenges:
 
----
-
-## ✨ Tính Năng Nổi Bật
-
-### 1. ⚡ Sandbox SQL In-Memory Client-Side (SQLite WASM)
-- Toàn bộ cơ sở dữ liệu mẫu, schema DDL và câu truy vấn SQL của học viên được thực thi biệt lập trong **Web Worker** luồng phụ của trình duyệt thông qua nhị phân `sql-wasm.wasm`.
-- **Độ trễ siêu tốc:** Kết quả trả về trong **0.1ms - 5ms**, không gây giật lag giao diện chính (Zero UI Blocking).
-- **An toàn tuyệt đối:** Học viên có thể chạy các câu lệnh can thiệp dữ liệu (`DROP TABLE`, `DELETE`, `UPDATE`) mà không sợ ảnh hưởng hệ thống — làm mới trang (F5) sẽ tự động hoàn nguyên cơ sở dữ liệu.
-
-### 2. 🧠 Khuyến Nghị Hai Tầng (Two-Stage RL Recommender)
-- **Tầng vĩ mô (Macro Action):** Mô hình RL (`MaskablePPO` xuất xưởng dạng **ONNX**) quan sát vector nhận thức 41 chiều của học viên để quyết định hành động chiến lược: `<Khái niệm, Độ khó, Chế độ>`.
-- **Tầng vi mô (Micro Action):** Hệ thống lọc cơ sở dữ liệu để tìm ra bài tập cụ thể đáp ứng chính xác chiến lược vĩ mô.
-- **Trí tuệ nhân tạo có thể giải thích (Explainable AI - XAI):** Mỗi bài tập đi kèm thẻ lý giải rõ ràng tại sao hệ thống lại chọn bài tập này (vd: *Củng cố kiến thức trước khi bị quên*, *Thử thách mở khóa nút mới trên DAG*).
-
-### 3. 🌳 Đồ Thị Tri Thức & Cây Kỹ Năng Trực Quan (Knowledge Graph DAG)
-- Toàn bộ kiến thức SQL được mô hình hóa thành một **Đồ thị có hướng không chu trình (DAG)** gồm 18 khái niệm cốt lõi (từ `SELECT`, `WHERE`, `JOIN` đến `Window Functions` và `Indexing Optimizer`).
-- Giao diện Cây Kỹ Năng tương tác trực quan, tự động đổi màu theo mức độ thành thạo thực tế của học viên.
-
-### 4. 🛡️ Chấm Điểm Ngữ Nghĩa AST & Phòng Chống Gian Lận Đa Tầng
-- **Phân tích AST:** Dùng `sqlglot` bóc tách cây ngữ pháp, ngăn chặn gian lận "hardcode" kết quả (ví dụ: dùng `SELECT 'An', 95` thay vì truy vấn bảng).
-- **Phân tích kế hoạch thực thi:** Tự động đối chiếu kết quả `EXPLAIN QUERY PLAN` để bảo đảm học viên vận dụng đúng chỉ mục (Index Seek/Scan) thay vì quét toàn bộ bảng.
-- **Telemetry Anti-Cheat:** Giám sát sự kiện dán code nhanh bất thường (Paste 0ms) và tần suất chuyển tab. Tự động kích hoạt câu hỏi kiểm chứng ngắn (Spot-Check) 30 giây để xác thực học viên thực sự hiểu code.
+1. **Dynamic Personalized Learning Paths:** Combines **Bayesian Knowledge Tracing (BKT)** and the **Ebbinghaus Forgetting Curve** with a **Two-Stage Reinforcement Learning (MaskablePPO)** recommender to personalize exercise difficulty, practice concepts, and spaced repetition intervals.
+2. **Zero-Latency In-Browser SQL Execution:** Offloads SQL query compilation and execution entirely to a **Web Worker running SQLite WebAssembly (`sql.js`)** on the client side. Achieves query latencies of **< 50ms** (typically ~1ms) with **zero server compute overhead**, supporting hundreds of concurrent learners on modest server infrastructure.
+3. **Multi-Layer Academic Integrity in the GenAI Era:** Protects against copy-paste abuse through **Abstract Syntax Tree (AST)** semantic validation using `sqlglot` (preventing output hardcoding, enforcing index plan adherence), real-time **keystroke telemetry** (0ms paste anomaly detection), and **30-second verification spot-checks**.
 
 ---
 
-## 🏗️ Kiến Trúc Hệ Thống
+## ✨ Key Features
 
-Dự án tuân thủ mô hình **Micro-Containerized Architecture**, tối ưu hóa việc phân tách giữa giao diện khách hàng, cổng định tuyến, dịch vụ AI Backend và cơ sở dữ liệu.
+### 1. ⚡ Client-Side Zero-Latency SQL Sandbox (SQLite WASM)
+- Complete database schema DDL, seed datasets, and user queries run in an isolated browser **Web Worker** via `sql-wasm.wasm`.
+- **Ultra-Low Latency:** Instant query feedback in **0.1ms – 5ms**, completely eliminating UI thread locking (Zero UI Jitter).
+- **Safety & Resiliency:** Learners can freely run destructive statements (`DROP TABLE`, `DELETE`, `UPDATE`) without affecting the central database. Refreshing the browser instantly re-hydrates the schema and sample data.
+
+### 2. 🧠 Two-Stage Reinforcement Learning Recommender
+- **Macro-Action Stage:** The RL policy (`MaskablePPO` compiled to **ONNX Runtime**) processes a 41-dimensional learner cognitive state vector $s_t = [K_t, M_t, H_t, F_t]$ and selects the strategic target `<Concept, Difficulty, LearningMode>`.
+- **Micro-Action Stage:** The application layer queries PostgreSQL to retrieve concrete exercises matching the chosen macro strategy.
+- **Explainable AI (XAI):** Every recommendation is accompanied by an interpretable rationale card (e.g., *"Reinforcing concept prior to memory decay threshold"*, *"Unlocking prerequisite node on the Knowledge Graph"*).
+
+### 3. 🌳 Interactive Knowledge Graph DAG & Skill Tree
+- SQL curriculum is structured as a **Directed Acyclic Graph (DAG)** of 18 core competencies (from basic `SELECT` and `WHERE` to `Multi-Table JOINs`, `Window Functions`, and `Indexing Optimizer`).
+- Visual interactive Skill Tree dynamically updates node status and colors based on real-time mastery probabilities computed by BKT.
+
+### 4. 🛡️ AST Semantic Grader & Anti-Cheat Telemetry
+- **AST Parsing:** Uses `sqlglot` to parse the Abstract Syntax Tree, detecting and rejecting cheat strategies such as hardcoding literal output values instead of querying relations.
+- **Execution Plan Analysis:** Parses `EXPLAIN QUERY PLAN` outputs to verify that learners leverage indexes appropriately rather than performing full table scans.
+- **Keystroke Telemetry:** Tracks 0ms paste bursts and tab-switching frequency. Anomalous behaviors trigger a 30-second comprehension spot-check to calibrate true mastery.
+
+### 5. 💡 Monaco Code Editor with Socratic Progressive Hints
+- Professional VS Code editing experience via **Monaco Editor** (`vs-dark` theme, line numbers, SQL syntax highlighting, SQL keyword auto-completion, and `Ctrl + Enter` execution shortcut).
+- 3-level progressive hints (Socratic questioning $\to$ conceptual reminder $\to$ syntax blueprint) that guide learners without leaking the solution.
+
+---
+
+## 🏗️ System Architecture
+
+Ascend LMS follows a **Micro-Containerized Architecture**, cleanly isolating client-side execution, reverse proxy routing, asynchronous Python backend services, and relational persistence.
 
 ```mermaid
 graph TB
-    subgraph ClientBrowser ["🌐 Trình Duyệt Khách Hàng (Client Browser)"]
-        SPA["Frontend SPA (Next.js 14 App Router)<br/>- Monaco SQL Editor<br/>- Cây Kỹ Năng Trực Quan<br/>- XAI Recommendation Cards"]
-        WASM_Worker["SQLite WASM Sandbox (Web Worker)<br/>- sql-wasm.wasm (In-Memory)<br/>- Thực thi Zero-Latency (< 5ms)"]
+    subgraph ClientBrowser ["🌐 Client Browser"]
+        SPA["Frontend SPA (Next.js 14 App Router)<br/>- Monaco SQL Editor<br/>- Visual Skill Tree (React Flow)<br/>- XAI Recommendation Cards"]
+        WASM_Worker["SQLite WASM Sandbox (Web Worker)<br/>- sql-wasm.wasm (In-Memory)<br/>- Zero-Latency Execution (< 5ms)"]
         SPA <-->|postMessage Channel| WASM_Worker
     end
 
-    subgraph InfraServer ["🖥️ Hạ Tầng Máy Chủ (Production Infrastructure)"]
-        ReverseProxy["Cổng Đảo Chiều Caddy 2<br/>- HTTPS / Let's Encrypt SSL tự động<br/>- Điều phối tải & Bảo mật Header"]
+    subgraph InfraServer ["🖥️ Production Infrastructure (Docker Compose)"]
+        ReverseProxy["Caddy 2 Reverse Proxy<br/>- Automatic HTTPS / Let's Encrypt<br/>- Route Dispatching & Security Headers"]
         
-        API_Backend["Backend API (FastAPI Python 3.10+)<br/>- Bộ chấm AST (sqlglot)<br/>- BKT & Ebbinghaus Updater<br/>- AI Recommender Engine (ONNX Runtime)"]
+        API_Backend["Backend API (FastAPI Python 3.10+)<br/>- AST Grader (sqlglot)<br/>- Cognitive Engine (BKT & Ebbinghaus)<br/>- RL Recommender (ONNX Runtime)"]
         
-        PostgresDB[("Cơ Sở Dữ Liệu PostgreSQL 16<br/>- Lưu trữ User & Lộ trình<br/>- Lịch sử nộp bài & Telemetry Log")]
+        PostgresDB[("PostgreSQL 16 Database<br/>- User Identity & Mastery States<br/>- Submission History & Telemetry Logs")]
     end
 
     SPA -->|HTTPS / REST API /api/*| ReverseProxy
-    ReverseProxy -->|Port 8000| API_Backend
-    ReverseProxy -->|Port 3000| SPA
+    ReverseProxy -->|Proxy Pass :8000| API_Backend
+    ReverseProxy -->|Proxy Pass :3000| SPA
     API_Backend -->|Async SQLAlchemy / asyncpg| PostgresDB
 ```
 
 ---
 
-## 💻 Công Nghệ Sử Dụng
+## 💻 Technology Stack
 
-| Thành phần | Công nghệ chính | Vai trò / Lý do lựa chọn |
+| Layer | Technology | Rationale & Architectural Purpose |
 |---|---|---|
-| **Frontend** | **Next.js 14**, React 18, TypeScript | App Router hiện đại, SSR/SSG tối ưu SEO và tốc độ tải trang ban đầu. |
-| **SQL Editor** | **Monaco Editor** (`@monaco-editor/react`) | Trình soạn thảo chuẩn VS Code, hỗ trợ autocomplete từ khóa SQL và phím tắt `Ctrl + Enter`. |
-| **Client Database**| **sql.js** (SQLite WebAssembly) | Thực thi SQL in-memory trực tiếp trong Web Worker, offload 100% chi phí compute khỏi server. |
-| **Styling** | **Tailwind CSS**, PostCSS, Lucide Icons | Thiết kế Dark Mode hiện đại, nhất quán, tinh gọn và tối ưu kích thước bundle. |
-| **Backend API** | **FastAPI** (Python 3.10+), Uvicorn | Hiệu năng cao (Asynchronous), tự động sinh tài liệu OpenAPI / Swagger chuẩn chỉnh. |
-| **AI / ML** | **Gymnasium**, `sb3-contrib` (MaskablePPO), **ONNX Runtime** | Mô phỏng học viên qua BKT + Ebbinghaus; chạy suy luận khuyến nghị siêu nhẹ (< 15ms) không cần PyTorch trên server. |
-| **SQL Parser** | **sqlglot** | Phân tích Abstract Syntax Tree (AST), phát hiện gian lận và tối ưu câu truy vấn. |
-| **Database** | **PostgreSQL 16**, SQLAlchemy (asyncpg), Alembic | Hệ quản trị cơ sở dữ liệu quan hệ mạnh mẽ, ACID, hỗ trợ JSONB cho dữ liệu telemetry. |
-| **Reverse Proxy** | **Caddy 2** | Reverse proxy hiện đại, tự động hóa SSL, cấu hình tinh gọn thay thế Nginx. |
-| **DevOps & CI/CD** | **Docker Compose**, **GitHub Actions**, Husky | Đóng gói toàn diện container 1 lệnh; quy trình kiểm thử 5 cổng nghiêm ngặt. |
+| **Frontend Framework** | **Next.js 14**, React 18, TypeScript 5 | App Router, SSR/SSG for optimized first-contentful paint and type safety. |
+| **SQL Code Editor** | **Monaco Editor** (`@monaco-editor/react`) | Industry-standard VS Code editor core with SQL autocomplete and keybinding support. |
+| **Client SQL Engine** | **sql.js** (SQLite WebAssembly) | Zero-latency in-memory query execution in dedicated Web Worker threads. |
+| **Styling & UI** | **Tailwind CSS**, PostCSS, Lucide Icons | Responsive dark-mode interface with zero runtime CSS-in-JS overhead. |
+| **Backend API** | **FastAPI** (Python 3.10+), Uvicorn | High-throughput asynchronous REST API with auto-generated OpenAPI / Swagger docs. |
+| **AI / Machine Learning** | **Gymnasium**, `sb3-contrib` (MaskablePPO), **ONNX Runtime** | Cognitive simulation via BKT + Ebbinghaus; lightweight sub-15ms inference without PyTorch. |
+| **AST Analysis** | **sqlglot** | Deep SQL syntactic and semantic tree analysis for robust anti-cheat grading. |
+| **Database & Migration** | **PostgreSQL 16**, SQLAlchemy (asyncpg), Alembic | ACID-compliant relational persistence with native JSONB telemetry storage. |
+| **Reverse Proxy** | **Caddy 2** | Production-ready HTTP/2 & HTTPS reverse proxy with automated SSL management. |
+| **DevOps & Quality Gates**| **Docker Compose**, **GitHub Actions**, Husky, lint-staged | One-command reproducible local environment; strict 5-gate automated CI pipeline. |
 
 ---
 
-## 🚀 Hướng Dẫn Khởi Chạy (Quickstart)
+## 🚀 Getting Started (Quickstart)
 
-### Yêu Cầu Tiên Quyết
-- [Docker](https://docs.docker.com/get-docker/) & [Docker Compose](https://docs.docker.com/compose/) (khuyến nghị Docker Desktop).
-- [Node.js](https://nodejs.org/) v20+ (nếu muốn chạy thủ công trên máy host).
-- [Python](https://www.python.org/) 3.10+ (nếu muốn phát triển backend cục bộ).
+### Prerequisites
+- [Docker](https://docs.docker.com/get-docker/) & [Docker Compose](https://docs.docker.com/compose/) (Docker Desktop recommended on Windows/macOS).
+- [Node.js](https://nodejs.org/) v20+ & [npm](https://www.npmjs.com/) (for host-level frontend development).
+- [Python](https://www.python.org/) 3.10+ (for host-level backend development).
 
 ---
 
-### Cách 1: Khởi Chạy Tự Động Toàn Diện Bằng Docker Compose (Khuyên dùng)
+### Option 1: Instant Launch with Docker Compose (Recommended)
 
-Chỉ với một câu lệnh duy nhất, toàn bộ 4 dịch vụ (PostgreSQL, FastAPI Backend, Next.js Frontend, Caddy Proxy) sẽ được tự động khởi dựng:
+To spin up the entire multi-container environment (PostgreSQL, FastAPI Backend, Next.js Frontend, and Caddy Reverse Proxy):
 
 ```bash
-# 1. Sao chép biến môi trường mẫu
+# 1. Clone repository
+git clone https://github.com/diepvanhieu25-tech/ascend-lms.git
+cd ascend-lms
+
+# 2. Copy sample environment file
 cp .env.example .env
 
-# 2. Khởi chạy toàn bộ hệ thống bằng Docker Compose
+# 3. Build and launch all services in detached mode
 docker compose up -d --build
 ```
 
-Sau khi các container ở trạng thái `healthy`, bạn có thể truy cập các cổng sau:
+Once all containers report `healthy`, access the platform at:
 
-| Dịch vụ | Địa chỉ truy cập | Ghi chú |
+| Service / Endpoint | URL | Description |
 |---|---|---|
-| **Cổng Web Tổng Hợp (Caddy Proxy)** | [http://localhost](http://localhost) | Cổng chuẩn cổng 80, tự động định tuyến `/api/*` về backend |
-| **Sandbox Thử Nghiệm SQLite WASM** | [http://localhost/poc/sqlite](http://localhost/poc/sqlite) | Trải nghiệm Monaco Editor & Web Worker SQL Client-side |
-| **Next.js Frontend (Trực tiếp)** | [http://localhost:3000](http://localhost:3000) | Cổng trực tiếp của Next.js |
-| **Tài liệu API Backend (Swagger UI)** | [http://localhost/docs](http://localhost/docs) | Swagger tương tác API FastAPI |
-| **FastAPI Backend (Trực tiếp)** | [http://localhost:8000/docs](http://localhost:8000/docs) | Kiểm tra sức khỏe `/api/v1/health` |
+| **Unified Web Gateway (Caddy)** | [http://localhost](http://localhost) | Reverse-proxied port 80 (routes `/api/*` to backend) |
+| **SQLite WASM Sandbox PoC** | [http://localhost/poc/sqlite](http://localhost/poc/sqlite) | In-browser Monaco SQL editor & Web Worker sandbox |
+| **Frontend Web App (Direct)** | [http://localhost:3000](http://localhost:3000) | Next.js standalone container port |
+| **Backend API Docs (Swagger)** | [http://localhost/docs](http://localhost/docs) | Interactive OpenAPI documentation |
+| **Backend Health Check** | [http://localhost:8000/api/v1/health](http://localhost:8000/api/v1/health) | Direct backend health diagnostic |
 
-Để dừng toàn bộ dịch vụ:
+To stop all containers:
 ```bash
 docker compose down
 ```
 
 ---
 
-### Cách 2: Chạy Thủ Công Môi Trường Phát Triển Cục Bộ (Local Dev)
+### Option 2: Local Development Setup (Without Docker)
 
-#### 1. Khởi chạy Backend (FastAPI):
+#### 1. Backend Service (FastAPI)
 ```bash
 cd backend
-python -m venv venv
-source venv/bin/activate  # Trên Windows: venv\Scripts\activate
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8000
 ```
 
-#### 2. Khởi chạy Frontend (Next.js):
+#### 2. Frontend Application (Next.js)
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 📁 Cấu Trúc Thư Mục (Monorepo)
+## 📁 Monorepo Structure
 
 ```text
 ascend-lms/
 ├── .github/
 │   └── workflows/
-│       └── ci.yml                 # CI Pipeline 5 cổng kiểm định tự động
-├── .husky/                        # Git hooks (chạy linter tự động trước khi commit)
-├── .onion/                        # Hồ sơ đặc tả kỹ thuật, phân tích toán học & kiến trúc
-│   ├── API-CONTRACTS.md           # Hợp đồng API giữa Frontend và Backend
-│   ├── SPEC-lms-frontend.md       # Đặc tả giao diện & Web Worker
-│   ├── SPEC-lms-backend.md        # Đặc tả nghiệp vụ API & Database
-│   ├── SPEC-sql-engine.md         # Đặc tả bộ chấm điểm AST & Sandbox
+│       └── ci.yml                 # Automated 5-Gate CI Pipeline
+├── .husky/                        # Git pre-commit hooks (Husky + lint-staged)
+├── .onion/                        # Technical specifications & mathematical models
+│   ├── API-CONTRACTS.md           # Interface contracts between Frontend and Backend
+│   ├── SPEC-lms-frontend.md       # Frontend UI & Web Worker specifications
+│   ├── SPEC-lms-backend.md        # Backend domain models & API architecture
+│   ├── SPEC-sql-engine.md         # Sandbox and AST grading specifications
 │   └── SYSTEM-ANALYSIS-ARCHITECTURE.md
-├── backend/                       # Dịch vụ Backend FastAPI
+├── backend/                       # Python FastAPI Backend service
 │   ├── app/
-│   │   ├── core/                  # Cấu hình, bảo mật, biến môi trường
-│   │   └── main.py                # Điểm khởi đầu ứng dụng FastAPI
-│   ├── tests/                     # Bộ kiểm thử Pytest
-│   ├── Dockerfile                 # Dockerfile cho backend
-│   └── pyproject.toml             # Cấu hình linter Ruff & Pytest
-├── frontend/                      # Ứng dụng Next.js 14 Frontend
+│   │   ├── core/                  # Settings, security, environment configurations
+│   │   └── main.py                # FastAPI application entrypoint
+│   ├── tests/                     # Pytest automated test suite
+│   ├── Dockerfile                 # Multi-stage production container for backend
+│   └── pyproject.toml             # Ruff linter & Pytest configurations
+├── frontend/                      # Next.js 14 Web Application
 │   ├── public/
-│   │   ├── sql-wasm.js            # Emscripten loader cho SQLite WASM
-│   │   ├── sql-wasm.wasm          # Nhị phân nhúng SQLite WebAssembly
-│   │   └── sqlite.worker.js       # Web Worker thực thi SQL độc lập
+│   │   ├── sql-wasm.js            # Emscripten loader for SQLite WASM
+│   │   ├── sql-wasm.wasm          # SQLite WebAssembly binary (in-memory execution)
+│   │   └── sqlite.worker.js       # Dedicated standalone Web Worker
 │   ├── src/
 │   │   ├── app/
-│   │   │   ├── poc/sqlite/        # Trang thử nghiệm SQLite WASM Sandbox
-│   │   │   ├── globals.css        # Cấu hình Tailwind CSS
-│   │   │   └── page.tsx           # Trang chủ
+│   │   │   ├── poc/sqlite/        # SQLite WASM Sandbox playground page
+│   │   │   ├── globals.css        # Tailwind CSS directives
+│   │   │   └── page.tsx           # Landing page
 │   │   ├── components/
-│   │   │   └── editor/            # Monaco SQL Editor component
+│   │   │   └── editor/            # Monaco SQLEditor component with Ctrl+Enter binding
 │   │   └── hooks/
-│   │       └── useSQLiteWorker.ts # React Hook kết nối Web Worker
-│   ├── Dockerfile                 # Dockerfile Next.js tối ưu Standalone
-│   └── package.json               # Dependencies phía client
+│   │       └── useSQLiteWorker.ts # React custom hook managing Web Worker lifecycle
+│   ├── Dockerfile                 # Next.js standalone container
+│   ├── package.json               # Frontend dependencies and scripts
+│   └── postcss.config.js          # PostCSS / Tailwind CSS configuration
 ├── tasks/
-│   ├── plan.md                    # Bản kế hoạch phân rã 6 giai đoạn
-│   └── todo.md                    # Bảng Kanban theo dõi tiến độ chi tiết
-├── Caddyfile                      # Cấu hình Reverse Proxy Caddy 2
-├── CONSTRAINTS.md                 # Tuyên ngôn cam kết chất lượng mã nguồn
-├── docker-compose.yml             # Bộ điều phối container cục bộ
-├── HLD.md                         # Tài liệu Thiết Kế Mức Cao (High-Level Design)
-├── LLD.md                         # Tài liệu Thiết Kế Mức Chi Tiết (Low-Level Design)
-└── README.md                      # Tài liệu giới thiệu dự án
+│   ├── plan.md                    # 6-phase master execution plan
+│   └── todo.md                    # Detailed progress tracking board
+├── Caddyfile                      # Caddy 2 reverse proxy configuration
+├── CONSTRAINTS.md                 # Project technical standards & non-negotiables
+├── docker-compose.yml             # Local multi-service orchestration
+├── HLD.md                         # High-Level Design specification
+├── LLD.md                         # Low-Level Design specification
+└── README.md                      # Project documentation entrypoint
 ```
 
 ---
 
-## 🧪 Quy Chuẩn Kiểm Định & Chất Lượng (Quality Gates)
+## 🧪 Quality Gates & CI/CD
 
-Dự án áp dụng quy chuẩn kỹ thuật nghiêm ngặt theo tài liệu [`CONSTRAINTS.md`](CONSTRAINTS.md). Mọi Pull Request muốn được hợp nhất vào nhánh `main` đều phải vượt qua **5 Cổng Chất Lượng Tự Động (GitHub Actions)**:
+To ensure code quality and prevent technical debt, this project enforces strict quality gates codified in [`CONSTRAINTS.md`](CONSTRAINTS.md). Every Pull Request targeting `main` must pass **5 Automated GitHub Actions Quality Gates**:
 
-1. **Gate 1: Lint & Code Formatting**
-   - Backend: `ruff check app/ tests/` & `ruff format --check`
-   - Frontend: `npm run lint` (ESLint)
-2. **Gate 2: Type Checking**
+1. **Gate 1: Linting & Code Formatting**
+   - Backend: `ruff check app/ tests/` and `ruff format --check`
+   - Frontend: `npm run lint` (ESLint with zero warnings/errors)
+2. **Gate 2: Static Type Checking**
    - Backend: `mypy app/` (Strict mode)
-   - Frontend: `tsc --noEmit` (TypeScript 0 error)
-3. **Gate 3: Automated Unit Testing**
+   - Frontend: `tsc --noEmit` (TypeScript 0 error policy)
+3. **Gate 3: Automated Unit & Benchmark Testing**
    - Backend: `pytest --cov=app --cov-fail-under=80`
-   - Frontend: `vitest --run` (SQLite Web Worker benchmark < 50ms)
-4. **Gate 4: Container Build Test**
-   - Kiểm tra khả năng build độc lập của Dockerfile backend và frontend
-5. **Gate 5: Security & Constraint Verification**
-   - Quét cấm các cú pháp hạ thấp chuẩn chất lượng: không chấp nhận `@ts-ignore`, cấm bỏ qua linter trái phép.
+   - Frontend: `vitest --run` (SQLite WASM execution benchmark `< 50ms`)
+4. **Gate 4: Container Build Verification**
+   - Independent multi-stage Docker builds for backend and frontend images
+5. **Gate 5: Security & Anti-Suppression Verification**
+   - Automated scan forbidding check suppressions (e.g., `@ts-ignore`, `eslint-disable`, `# noqa`) and unhandled stubs.
 
 ---
 
-## 🗺️ Kế Hoạch Phát Triển (Roadmap)
+## 🗺️ Development Roadmap
 
-- [x] **Giai đoạn 1: Triệt tiêu Rủi ro Kỹ thuật & Hạ tầng**
-  - [x] Khởi tạo Monorepo, cấu hình Git Workflow, Husky & lint-staged.
-  - [x] Thiết lập Docker Compose 4 containers (Caddy, NextJS, FastAPI, Postgres).
-  - [x] Thiết lập CI/CD GitHub Actions 5 cổng kiểm định tự động.
-  - [x] Triển khai thành công PoC SQLite WASM Web Worker (`< 50ms` latency).
-- [ ] **Giai đoạn 2: Cơ Sở Dữ Liệu & Bộ Chấm Ngữ Nghĩa AST**
-  - [ ] Thiết kế ERD hoàn chỉnh và migration bằng Alembic.
-  - [ ] Xây dựng bộ chấm `sqlglot` phát hiện gian lận và tối ưu Index qua `EXPLAIN QUERY PLAN`.
-- [ ] **Giai đoạn 3: Môi Trường Mô Phỏng Nhận Thức & Huấn Luyện AI**
-  - [ ] Triển khai công thức toán BKT và suy giảm trí nhớ Ebbinghaus.
-  - [ ] Xây dựng môi trường `gymnasium.Env` và huấn luyện thuật toán `MaskablePPO`.
-  - [ ] Xuất xưởng mô hình định dạng ONNX phục vụ API.
-- [ ] **Giai đoạn 4: LMS Backend API & Hệ Thống Phòng Chống Gian Lận**
-  - [ ] Hoàn thiện các API Khuyến nghị, Xác thực, Diagnostic Placement Test.
-  - [ ] Telemetry background tasks và cơ chế ngắt nhịp kiểm chứng Spot-Check 30s.
-- [ ] **Giai đoạn 5: Hoàn Thiện Giao Diện Người Dùng (Next.js UI)**
-  - [ ] Trực quan hóa Cây Kỹ Năng tương tác (React Flow).
-  - [ ] Không gian thực hành tương tác với Progressive Socratic Hints.
-  - [ ] Bảng điều khiển quản trị viên theo dõi bản đồ nhiệt Frustration Heatmap.
-- [ ] **Giai đoạn 6: Kiểm Thử Tải, Đóng Gói & Báo Cáo Tốt Nghiệp**
-  - [ ] Kiểm thử tải 500 CCU, tối ưu hóa Core Web Vitals (Lighthouse > 90).
-  - [ ] Hoàn thành báo cáo và bảo vệ Đồ án Tốt nghiệp.
+- [x] **Phase 1: Technical De-risking & Infrastructure**
+  - [x] Monorepo initialization with Git workflows, Husky, and lint-staged.
+  - [x] Multi-container Docker Compose setup (Caddy, Next.js, FastAPI, PostgreSQL).
+  - [x] Automated 5-Gate GitHub Actions CI pipeline.
+  - [x] Proof-of-Concept SQLite WASM Web Worker sandbox (`< 50ms` execution threshold verified).
+- [ ] **Phase 2: Database Schema & AST Semantic Grader**
+  - [ ] Complete ERD schema design with Alembic migrations.
+  - [ ] `sqlglot` AST grader for hardcoding detection and `EXPLAIN QUERY PLAN` validation.
+- [ ] **Phase 3: Cognitive Simulator & AI Training**
+  - [ ] Mathematical implementation of BKT state updating and Ebbinghaus memory decay.
+  - [ ] `gymnasium.Env` synthetic student simulation and `MaskablePPO` policy training.
+  - [ ] Model export to ONNX runtime format for low-latency backend inference.
+- [ ] **Phase 4: LMS Backend API & Anti-Cheat Engine**
+  - [ ] Recommendation, authentication, and diagnostic placement test endpoints.
+  - [ ] Keystroke telemetry processing and 30-second calibration spot-checks.
+- [ ] **Phase 5: Next.js Frontend & Interactive Experience**
+  - [ ] Interactive Knowledge Graph visual skill tree (`@xyflow/react`).
+  - [ ] Full practice interface with 3-tier progressive Socratic hints.
+  - [ ] Instructor dashboard featuring Frustration Heatmap and drift metrics.
+- [ ] **Phase 6: Load Testing, Production Deployment & Thesis Defense**
+  - [ ] 500 CCU load testing and Core Web Vitals optimization (Lighthouse > 90).
+  - [ ] Production deployment and thesis defense documentation.
 
 ---
 
-## 📜 Giấy Phép (License)
+## 📜 License
 
-Dự án được phân phối dưới giấy phép **MIT License**. Xem thêm tại tệp `LICENSE` để biết chi tiết.
+This project is licensed under the terms of the **MIT License**. See the [LICENSE](LICENSE) file for details.
 
 ---
 
 <div align="center">
-  <sub>Xây dựng với ❤️ bởi <b>Nhóm Nghiên cứu Đề tài Tốt nghiệp CNTT — Ascend LMS</b></sub>
+  <sub>Engineered with ❤️ for the <b>Computer Science Graduation Thesis — Ascend LMS</b></sub>
 </div>

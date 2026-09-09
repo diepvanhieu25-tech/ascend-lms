@@ -1,23 +1,23 @@
 {
-    admin off
+	admin off
 }
 
 :80 {
-    # Proxy API requests to FastAPI backend
-    handle /api/* {
-        reverse_proxy backend:8000
-    }
+	# Proxy API requests to FastAPI backend
+	handle /api/* {
+		reverse_proxy backend:8000
+	}
 
-    handle /docs* {
-        reverse_proxy backend:8000
-    }
+	handle /docs* {
+		reverse_proxy backend:8000
+	}
 
-    handle /openapi.json {
-        reverse_proxy backend:8000
-    }
+	handle /openapi.json {
+		reverse_proxy backend:8000
+	}
 
-    # Proxy all other requests to Next.js frontend
-    handle /* {
-        reverse_proxy frontend:3000
-    }
+	# Proxy all other requests to Next.js frontend
+	handle /* {
+		reverse_proxy frontend:3000
+	}
 }

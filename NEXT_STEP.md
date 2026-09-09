@@ -1,40 +1,45 @@
 # Hướng Dẫn Tiếp Tục Phiên Làm Việc (Quick Resume Guide)
 
-> **Dành cho:** Ngày làm việc tiếp theo  
-> **Dự án:** Adaptive Learning SQL (Reinforcement Learning)
+> **Dành cho:** Phiên làm việc tiếp theo  
+> **Dự án:** Ascend LMS - Adaptive Learning SQL (Reinforcement Learning)
 
 ---
 
-## 📋 Câu Lệnh Copy - Paste Cho Phiên Mới
+## 📋 Câu Lệnh Copy - Paste Để Khởi Động Phiên Mới
 
-Khi mở một phiên chat mới với Antigravity, bạn chỉ cần copy nguyên văn dòng dưới đây và gửi vào ô chat:
+Khi mở phiên chat mới với Antigravity, bạn chỉ cần copy nguyên văn dòng dưới đây và gửi vào ô chat:
 
 ```text
-@[SESSION_HANDOFF.md] Đọc file handoff để nắm toàn bộ ngữ cảnh dự án và xem file tasks/todo.md để thực thi Task tiếp theo.
+@[SESSION_HANDOFF.md] Đọc file handoff để nắm toàn bộ ngữ cảnh dự án, các bài học kinh nghiệm cần tránh, và triển khai Task 6: Module Knowledge Graph & Lan truyền DAG theo đúng quy trình Git branch.
 ```
 
 ---
 
 ## 📌 Tóm Tắt Nhanh Điểm Dừng Hiện Tại (Checkpoint)
 
-* **Trạng thái:** HOÀN THIỆN ĐẶC TẢ & KẾ HOẠCH. Hệ thống đã có trọn bộ tài liệu Spec (bao gồm cả CI/CD, Git Workflow), ràng buộc chất lượng `CONSTRAINTS.md`, và danh sách công việc rõ ràng tại `tasks/todo.md`. Repository local đã được link với remote Github (`https://github.com/diepvanhieu25-tech/ascend-lms.git`).
-* **Tài liệu cốt lõi đã hoàn thiện chuẩn xác 100%:**
-  - File điều phối tổng & Handoff: [`SESSION_HANDOFF.md`](file:///home/diepvanhieu/workspace/adaptive-learning-sql/SESSION_HANDOFF.md)
-  - Hồ sơ Đề cương ĐATN chuẩn form: [`PHU LUC 02_De cuong DATN.md`](file:///home/diepvanhieu/workspace/adaptive-learning-sql/PHU%20LUC%2002_De%20cuong%20DATN.md)
-  - Hồ sơ Nhiệm vụ đồ án chuẩn form: [`PHU LUC 03_Nhiem vu do an.md`](file:///home/diepvanhieu/workspace/adaptive-learning-sql/PHU%20LUC%2003_Nhiem%20vu%20do%20an.md)
-  - Phân tích Hệ thống, C4, ERD, DevOps & Năng lực chịu tải: [`.onion/SYSTEM-ANALYSIS-ARCHITECTURE.md`](file:///home/diepvanhieu/workspace/adaptive-learning-sql/.onion/SYSTEM-ANALYSIS-ARCHITECTURE.md)
-  - Hợp đồng API RESTful v1: [`.onion/API-CONTRACTS.md`](file:///home/diepvanhieu/workspace/adaptive-learning-sql/.onion/API-CONTRACTS.md)
-  - Bản đồ năng lực: [`.onion/capability-map.md`](file:///home/diepvanhieu/workspace/adaptive-learning-sql/.onion/capability-map.md)
-  - Trọn bộ 8 bản đặc tả kỹ thuật module & hạ tầng (`.onion/SPEC-*.md`).
-  - Ràng buộc dự án: `CONSTRAINTS.md`.
-  - Kế hoạch & Kanban: `tasks/plan.md`, `tasks/todo.md`.
+* **Trạng thái:** HOÀN THÀNH PHASE 1 & TASK 5 (PHASE 2).
+  - 4 Docker containers (`caddy`, `backend`, `frontend`, `postgres`) đang chạy và `healthy`.
+  - Database schema 10 bảng đã tạo lập bằng Alembic migration `9df090091b69`.
+  - Hệ thống CI/CD GitHub Actions 5 Quality Gates đã vượt qua 100% (Run ID: `34342493670`).
+  - Toàn bộ test suite (14 backend tests, frontend vitest) đều pass, coverage backend 97%.
+* **Branch hiện tại:** `feat/task-5-db-schema` (đã merge đầy đủ vào `main`, working tree sạch).
 
 ---
 
-## 🎯 Mục Tiêu Của Phiên Tiếp Theo: Thực Thi Phase 1 (High-Risk Spikes)
+## ⚠️ 3 Kỷ Luật Kỹ Thuật Bắt Buộc Tuân Thủ
 
-1. **Khởi động mã nguồn:** Thực thi **Task 1** trong `tasks/todo.md` (Setup Base Project, Git Workflow, Linter/Husky).
-2. **PoC Web Worker SQL:** Thực thi **Task 2** để triệt tiêu rủi ro Frontend block UI.
-3. **PoC ONNX Inference:** Thực thi **Task 3** để đảm bảo Backend chạy mô hình nhanh, nhẹ.
+1. **Tuyệt đối không hack code / bypass test:** Không tạo mock hay fixture tạo schema (`Base.metadata.create_all`) để lách luật. Mọi kiểm thử phải chạy trên schema di trú thật từ Alembic.
+2. **Không tự ý báo hoàn thành khi chưa kiểm thử thực nghiệm (Zero Premature Completion):** Phải tự chạy container, curl API, kiểm tra UI thực tế trước khi xác nhận xong task.
+3. **Kỷ luật Git Workflow:** Luôn tạo nhánh `feat/task-6-knowledge-graph`, cấm commit trực tiếp trên `main`.
 
+---
 
+## 🎯 Mục Tiêu Của Phiên Tiếp Theo: Task 6 (Module Knowledge Graph & Lan Truyền DAG)
+
+1. Tạo nhánh: `git checkout -b feat/task-6-knowledge-graph`.
+2. Tham chiếu đặc tả: [`.onion/SPEC-knowledge-graph.md`](file:///home/diepvanhieu/workspace/ascend-lms/.onion/SPEC-knowledge-graph.md).
+3. Tạo file tri thức chuẩn `backend/app/knowledge/knowledge_graph.json` định nghĩa 18 SQL concepts, quan hệ tiên quyết và Bloom level.
+4. Lập trình module DAG (`KnowledgeGraphManager`), kiểm tra chu trình (Cycle Detection), Topological Sort.
+5. Lập trình thuật toán **Prerequisite Propagation** tính vector $s_0 \in [0, 1]^{18}$ từ kết quả Diagnostic Assessment (giải quyết bài toán Cold-Start).
+6. Viết bộ unit test kiểm thử 100% các nhánh lan truyền tiên quyết.
+7. Chạy full CI gates local (Ruff, Mypy, Pytest) -> commit -> merge `main` -> verify GitHub Actions.

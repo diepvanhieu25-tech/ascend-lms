@@ -6,7 +6,11 @@ Last reviewed: 2026-09-08 by @diepvanhieu
 
 - **Không dùng comment ẩn lỗi:** Tuyệt đối cấm sử dụng `@ts-ignore`, `eslint-disable`, `# noqa`, `# type: ignore`. Nếu linter/compiler báo lỗi, nhiệm vụ của chúng ta là sửa lỗi đó, không phải giấu nó đi.
 - **Không có code "rỗng":** Cấm để sót các khối `try...catch {}` nuốt lỗi mà không log, các hàm rỗng `pass`, hoặc ném `throw new Error("Not implemented")` trong code đã merge.
-- **Không gian lận Test:** Không được phép dùng `.skip` hoặc tự ý xóa Unit Test để cho thanh CI xanh. Nếu cần skip, phải có comment giải thích lý do cụ thể.
+- **Không gian lận Test & Không Hack Code Bypass:** 
+  - Không được phép dùng `.skip` hoặc tự ý xóa Unit Test để cho thanh CI xanh.
+  - Tuyệt đối cấm viết "hack code" để qua mặt test (ví dụ: dùng `Base.metadata.create_all` trong test thay vì chạy migration thật, mock sai bản chất, hardcode kết quả). Test và Schema phải kiểm chứng đúng 100% điều kiện thực thi trên môi trường thực tế.
+- **Không tự ý báo hoàn thành khi chưa kiểm thử thực tế (Zero Premature Completion):** Tuyệt đối cấm viết code xong là báo xong và nhảy sang task mới. Phải tự kiểm tra, khởi chạy thực nghiệm trên môi trường thật (Docker, browser, API, migration) và xác nhận pass 100% Acceptance Criteria trước khi báo cáo.
+- **Kỷ luật Git Workflow (Trunk-Based / Short-lived Branches):** Tuyệt đối KHÔNG code hay commit trực tiếp trên `main`. Mọi công việc phải xuất phát từ branch feature (`feat/...`, `fix/...`, `chore/...`), test pass toàn diện mới merge vào `main`.
 - **Không lộ Secret:** Tuyệt đối không hardcode DB password, JWT Secret hay API keys vào source code.
 - **Tính bất khả xâm phạm:** File `CONSTRAINTS.md` này không bao giờ được phép chỉnh sửa nới lỏng (weaken) chỉ để cố vượt qua lỗi khi build.
 

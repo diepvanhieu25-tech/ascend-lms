@@ -1,9 +1,21 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import MonacoSQLEditor from '@/components/editor/MonacoSQLEditor';
+import dynamic from 'next/dynamic';
 import { useSQLiteWorker, QueryResult } from '@/hooks/useSQLiteWorker';
 import { Play, Database, Table, Sparkles, RefreshCw, Zap, Clock, Code2 } from 'lucide-react';
+
+const MonacoSQLEditor = dynamic(
+  () => import('@/components/editor/MonacoSQLEditor'),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-full w-full flex items-center justify-center bg-slate-900/50 text-slate-500 font-mono text-xs rounded-lg border border-slate-800">
+        Đang nạp Monaco Editor...
+      </div>
+    ),
+  }
+);
 
 const SAMPLE_DDL = `
 CREATE TABLE IF NOT EXISTS courses (

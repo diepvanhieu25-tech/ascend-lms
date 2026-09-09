@@ -9,7 +9,7 @@
     "lint-staged": "^15.2.0"
   },
   "lint-staged": {
-    "frontend/**/*.{ts,tsx,js,jsx}": [
+    "frontend/src/**/*.{ts,tsx,js,jsx}": [
       "npx --prefix frontend eslint"
     ],
     "backend/**/*.py": [

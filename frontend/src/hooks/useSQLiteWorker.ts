@@ -12,17 +12,20 @@ export function useSQLiteWorker() {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    // Khởi tạo Web Worker chạy riêng biệt ngoài Main UI Thread
-    const worker = new Worker(
-      new URL('../workers/sqlite.worker.ts', import.meta.url),
-      { type: 'module' }
-    );
+    if (typeof window === 'undefined') return;
+
+    // Khởi tạo Web Worker từ static bundle trong public
+    const worker = new Worker('/sqlite.worker.js');
     workerRef.current = worker;
 
     worker.onmessage = (event: MessageEvent) => {
       if (event.data.type === 'READY') {
         setIsReady(true);
       }
+    };
+
+    worker.onerror = (err) => {
+      console.error('SQLite Worker Error:', err);
     };
 
     worker.postMessage({ type: 'INIT' });

@@ -1,5 +1,6 @@
 {
   "extends": "next/core-web-vitals",
+  "ignorePatterns": ["public/*", ".next/*"],
   "settings": {
     "next": {
       "rootDir": "frontend/"

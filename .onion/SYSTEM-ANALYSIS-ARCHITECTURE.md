@@ -16,8 +16,8 @@
 | **Learner (Học viên)** | Con người (Primary) | Người học SQL cấp độ Intermediate (luyện thi, phỏng vấn backend/data). Thực hiện bài đánh giá năng lực đầu vào (Diagnostic Placement Test), tương tác với Monaco Editor, chạy SQL trên SQLite WASM client-side, nhận khuyến nghị cá nhân hóa từ AI, xem Cây kỹ năng trực quan, tham gia Mock Technical Interview. |
 | **Admin / Lecturer (Quản trị viên / Giảng viên)** | Con người (Secondary) | Quản lý ngân hàng bài tập và đề đánh giá đầu vào, cấu hình đồ thị tri thức DAG, theo dõi Dashboard giám sát 2 tầng: Kỹ thuật (độ trễ, lỗi sandbox) và Sư phạm (Bản đồ nhiệt nản lòng - Frustration Heatmap, Độ trôi mô hình - Model Drift). |
 | **RL Macro Recommender** | Hệ thống (AI Agent) | Tác nhân học tăng cường đưa ra quyết định sư phạm tối ưu $a_t = \langle c_k, d_m, \text{mode} \rangle$ dựa trên quan sát trạng thái nhận thức hiện tại $s_t$ (khởi tạo từ bài Diagnostic Test). |
-| **WASM In-Browser Sandbox** | Hệ thống (Client Engine) | Môi trường SQLite WebAssembly thực thi câu lệnh SQL trực tiếp trên RAM trình duyệt của học sinh với độ trễ < 20ms, đảm bảo an toàn tuyệt đối và tính độc lập dữ liệu. |
-| **AST Semantic Grader** | Hệ thống (Rule Engine) | Bộ phân tích cú pháp trừu tượng (`sqlglot`) kiểm tra cấu trúc câu lệnh, bắt buộc sử dụng đúng mệnh đề và loại bỏ mã gian lận / hardcode. |
+| **WASM In-Browser Sandbox** | Hệ thống (Client Engine) | Môi trường SQLite WebAssembly thực thi câu lệnh SQL trực tiếp trên RAM trình duyệt của học sinh với độ trễ < 20ms. Việc so sánh bảng kết quả (Diff table) diễn ra hoàn toàn ở Client. |
+| **AST Semantic Grader** | Hệ thống (Rule Engine) | Bộ phân tích cú pháp trừu tượng (`sqlglot`) chạy trên Backend để kiểm tra cấu trúc câu lệnh khi sinh viên bấm Nộp Bài. |
 
 ---
 

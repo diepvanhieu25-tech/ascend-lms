@@ -28,9 +28,10 @@
   2. *Môi trường mô phỏng & Đánh giá giải thuật:* Xây dựng môi trường giả lập người học ảo (`SQLStudentEnv`) chuẩn Gymnasium; huấn luyện mô hình RL (MaskablePPO) và chứng minh sự vượt trội có ý nghĩa thống kê ($p < 0.05$) so với các phương pháp cơ sở (Fixed Linear, Leitner Spaced Repetition, Rule-based).
   3. *Bộ đánh giá năng lực đầu vào (Adaptive Placement Diagnostic):* Giải quyết triệt để bài toán Khởi đầu Lạnh (Cold-Start Problem) bằng cơ chế kiểm tra chẩn đoán thích ứng nhanh (5-7 câu tại các nút giao DAG) hoặc tự chọn profile có câu hỏi xác thực phản xạ (Calibration Mini-Check 30s) kết hợp thuật toán lan truyền tiên quyết (Prerequisite Propagation) để khởi tạo chính xác vector trạng thái $s_0$, đưa người học vào đúng Vùng phát triển gần (ZPD) ngay từ bước đầu tiên.
   4. *Phân tích & Thiết kế hệ thống toàn diện:* Xây dựng mô hình ca sử dụng (Use Cases), mô hình kiến trúc C4 (Context, Container, Component), biểu đồ tuần tự (Sequence Diagrams), mô hình dữ liệu (ERD) và hệ thống hợp đồng API RESTful chuẩn mực.
-  5. *Phát triển sản phẩm phần mềm thực tế:* Xây dựng hệ thống Web LMS hoàn chỉnh với trải nghiệm người dùng không ma sát (Zero-Friction UX): Trình soạn thảo Monaco Editor, Sandbox thực thi SQLite WebAssembly (WASM) an toàn trong RAM trình duyệt (độ trễ < 20ms), Bộ chấm điểm bản chất bằng phân tích cú pháp AST (`sqlglot`) kết hợp chấm kế hoạch `EXPLAIN QUERY PLAN`, Cây kỹ năng mạng lưới trực quan (`@xyflow/react`), Thẻ giải thích lý do sư phạm (XAI), và Chế độ Phỏng vấn Kỹ thuật thử nghiệm (Mock Technical Interview).
-  6. *Cơ chế phòng thủ gian lận AI (Anti-Ghost Mastery):* Tích hợp trợ lý Socratic AI Tutor nội bộ dẫn dắt gợi mở, bộ phân tích Telemetry nhận diện dán code 0ms và câu hỏi phản xạ nhanh Spot-Check 30s để đảm bảo người học thực sự hiểu bản chất.
-  7. *Thiết kế & Triển khai hạ tầng (DevOps & Infrastructure):* Đóng gói Docker đa tầng cho toàn bộ hệ thống (FastAPI, Next.js, PostgreSQL), thiết lập CI/CD pipeline tự động hóa kiểm thử, triển khai môi trường Production với Reverse Proxy Caddy/Nginx (SSL/TLS), và tích hợp Dashboard giám sát 2 tầng (Kỹ thuật: RED metrics & Sư phạm: Frustration Heatmap, Model Drift).
+  5. *Phát triển sản phẩm phần mềm thực tế:* Xây dựng hệ thống Web LMS hoàn chỉnh với trải nghiệm người dùng không ma sát (Zero-Friction UX): Trình soạn thảo Monaco Editor, Sandbox thực thi SQLite WebAssembly (WASM) an toàn trên trình duyệt, Bộ chấm điểm bản chất bằng phân tích cú pháp AST (`sqlglot`) xử lý độc lập trên máy chủ, Cây kỹ năng mạng lưới trực quan (`@xyflow/react`), Thẻ giải thích lý do sư phạm (XAI), và Chế độ Phỏng vấn Kỹ thuật thử nghiệm (Mock Technical Interview). 
+  6. *Tự động hóa Ngân hàng dữ liệu (LLM Pipeline):* Ứng dụng mô hình Ngôn ngữ lớn (LLM - GPT/Gemini) để sinh tự động hàng loạt cấu trúc lược đồ (Schema DDL), dữ liệu mồi (Seed Data) chứa các bẫy biên (NULL, duplicate) và các luật chấm AST, đảm bảo tính khả thi của dự án khi phát triển quy mô độc lập.
+  7. *Cơ chế phòng thủ gian lận & Cá nhân hóa vượt bậc:* Tích hợp phân tích đo lường hành vi (Telemetry) nhận diện dán code siêu tốc, câu hỏi kiểm tra chéo (Spot-Check). Đồng thời, cho phép học viên chủ động chọn tính năng Thử thách vượt bậc (Mastery Challenge) tại bất kỳ học phần (node) nào trên Đồ thị tri thức để chứng minh năng lực và thiết lập lộ trình học tập tối ưu hóa thời gian.
+  8. *Thiết kế & Triển khai hạ tầng (DevOps & Infrastructure):* Đóng gói Docker đa tầng cho toàn bộ hệ thống (FastAPI, Next.js, PostgreSQL), thiết lập CI/CD pipeline tự động hóa kiểm thử, triển khai môi trường Production với Reverse Proxy Caddy/Nginx (SSL/TLS), và tích hợp Dashboard giám sát toàn diện (Kỹ thuật: RED metrics & Sư phạm: Bản đồ nhiệt độ thất vọng - Frustration Heatmap, Đo lường độ trôi mô hình AI - Model Drift).
 
 ---
 
@@ -64,8 +65,9 @@ Nội dung đồ án được tổ chức thành 4 chương chính:
 * **CHƯƠNG 3: XÂY DỰNG CHƯƠNG TRÌNH VÀ TRIỂN KHAI HẠ TẦNG**  
   - Xây dựng Môi trường mô phỏng nhận thức `SQLStudentEnv` theo chuẩn `gymnasium.Env`.  
   - Huấn luyện mô hình RL Macro Agent (MaskablePPO) và xuất bản chính sách suy luận tối ưu (ONNX/stateless inference engine).  
+  - Xây dựng Bộ tạo dữ liệu tự động (LLM Data Pipeline) bằng Prompt Engineering để sinh DDL, dữ liệu mồi và bộ Test Cases cho 18 học phần cốt lõi.
   - Xây dựng Module Đánh giá năng lực đầu vào và Bộ khởi tạo trạng thái nhận thức $s_0$.  
-  - Xây dựng Bộ chấm điểm SQL đa lớp: Client-side SQLite WASM runner, Bộ phân tích AST ngữ nghĩa (`sqlglot`), và Chấm tối ưu hóa `EXPLAIN QUERY PLAN`.  
+  - Xây dựng Bộ chấm điểm SQL đa lớp: Sandbox SQLite WASM tại Client, Bộ phân tích AST ngữ nghĩa (`sqlglot`) xử lý trên Backend, và Cơ chế chấm điểm kế hoạch thực thi `EXPLAIN QUERY PLAN`.  
   - Phát triển dịch vụ Backend (FastAPI, SQLAlchemy, PostgreSQL, Telemetry Ingestion, Socratic AI Tutor).  
   - Phát triển ứng dụng Web Frontend (Next.js 14, Monaco Editor, `@xyflow/react` Visual Skill Tree, XAI Cards, Mock Technical Interview).  
   - Thiết kế và triển khai Hạ tầng (Docker, Docker Compose, Nginx Reverse Proxy, SSL, CI/CD Pipeline GitHub Actions).  
@@ -94,7 +96,7 @@ Nội dung đồ án được tổ chức thành 4 chương chính:
    - Trình soạn thảo Monaco Editor kết hợp SQLite WASM sandbox chạy ngay trên RAM trình duyệt.
    - Bộ chấm điểm bản chất bằng AST và kế hoạch thực thi câu lệnh.
    - Thẻ giải thích quyết định đề xuất sư phạm (XAI Card).
-   - Cơ chế phòng chống gian lận AI (Anti-Ghost Mastery Telemetry & Spot-Check 30s).
+   - Cơ chế phòng chống gian lận thông minh (Telemetry Measurement & Spot-Check).
    - Chế độ phỏng vấn kỹ thuật giả lập (Mock Technical Interview).
    - Dashboard quản trị và giám sát sư phạm (Frustration Heatmap & Model Drift).  
 5. **Bộ mã nguồn và tài liệu kỹ thuật:** Lưu trữ trên GitHub kèm tài liệu thiết kế hệ thống, tài liệu API, hướng dẫn triển khai Docker và cấu hình CI/CD tự động.

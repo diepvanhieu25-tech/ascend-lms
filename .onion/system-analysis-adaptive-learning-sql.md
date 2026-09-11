@@ -15,7 +15,7 @@ Vector trạng thái $s_t$ đại diện cho người học tại bước $t$:
 $$s_t = \left[ K_t, M_t, H_t, F_t \right]$$
 
 1. **Vector Độ Thành Thạo Khái Niệm ($K_t \in [0, 1]^N$):**
-   - $N$ là số lượng khái niệm trong Đồ thị tri thức SQL ($N \approx 15-20$ node: `SELECT`, `WHERE`, `ORDER_BY`, `GROUP_BY`, `HAVING`, `JOIN_INNER`, `JOIN_LEFT`, `SUBQUERY`, `WINDOW_FUNC`,...).
+   - $N$ là số lượng khái niệm trong Đồ thị tri thức SQL ($N = 18$ node: `SELECT`, `WHERE`, `ORDER_BY`, `GROUP_BY`, `HAVING`, `JOIN_INNER`, `JOIN_LEFT`, `SUBQUERY`, `WINDOW_FUNC`,...).
    - Được cập nhật liên tục qua mô hình **Bayesian Knowledge Tracing (BKT)**:
      $$P(L_{t+1}) = P(L_t | \text{Obs}_t) + (1 - P(L_t | \text{Obs}_t)) \cdot P(T)$$
      Trong đó:
@@ -120,8 +120,8 @@ $$\mathcal{R}(s_t, a_t, s_{t+1}) = w_1 \cdot \Delta \text{Mastery} + w_2 \cdot \
   ```
   *Khi thêm môn Python hay Thuật toán, chỉ cần thay file đồ thị và ngân hàng bài tập, giữ nguyên core RL.*
 - **Pluggable Grader Interface:**
-  - `IExerciseEvaluator`:
-    - `SQLEvaluator`: Chạy truy vấn SQL trên SQLite WASM / In-Memory, so sánh bảng kết quả (diff table).
+  - `IExerciseEvaluator` (Tách biệt: Client-side TypeScript chấm Diff, Server-side Python chấm AST):
+    - `SQLEvaluator`: Chạy truy vấn SQL trên SQLite WASM (Trình duyệt), so sánh bảng kết quả (diff table). Backend parse AST.
     - `CodeEvaluator` (Tương lai): Chạy test case cho Python/JavaScript.
     - `QuizEvaluator`: Chấm trắc nghiệm lý thuyết.
 

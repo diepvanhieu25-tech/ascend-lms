@@ -1,7 +1,7 @@
 # Handoff Ngữ Cảnh Dự Án (Session Handoff & Quick Resume)
 
 > **Mục đích:** File này lưu trữ toàn bộ trạng thái kiến trúc, tiến độ thực thi, quy chuẩn kỷ luật kỹ thuật, các bài học kinh nghiệm cần tránh và hướng dẫn cho phiên làm việc tiếp theo của dự án **Ascend LMS** (Adaptive Learning SQL ứng dụng Reinforcement Learning).  
-> **Thời gian cập nhật:** 2026-09-09 (Cuối Phase 1 & Task 5 Phase 2) | **Hạn nộp đồ án:** 20/12/2026 (~15 tuần) | **Hình thức:** Solo Project
+> **Thời gian cập nhật:** 2026-09-12 (Hoàn thành rà soát tĩnh 6 lỗi kiến trúc của Phase 1) | **Hạn nộp đồ án:** 20/12/2026 (~15 tuần) | **Hình thức:** Solo Project
 
 ---
 
@@ -14,7 +14,7 @@
   1. **Two-Stage RL Architecture:** RL Macro Agent quyết định chiến lược vĩ mô `(Khái niệm + Độ khó + Mục đích sư phạm)`, tầng LMS phụ trách lấy bài tập cụ thể từ CSDL.
   2. **Simulated Learner Environment:** Xây dựng môi trường giả lập người học chuẩn nhận thức (`Gymnasium` + BKT - Bayesian Knowledge Tracing + Đường cong quên lãng Ebbinghaus) để huấn luyện offline và đối chuẩn (benchmark) với lộ trình Fixed Linear và Rule-based.
   3. **Đánh giá "Hiểu Bản Chất" Đa Lớp:** SQLite WebAssembly (`sql.js`) chạy trong trình duyệt + Phân tích cú pháp AST (`sqlglot`) + Chấm kế hoạch thực thi `EXPLAIN QUERY PLAN` (tối ưu hóa Index) + Bộ test case bẫy biên (`NULL`, duplicates).
-  4. **Phòng thủ chống gian lận AI (Anti-Ghost Mastery):** AI Socratic Tutor nội bộ gợi mở từng bước + Telemetry nhận diện dán code (0ms paste) + Thử thách phản xạ ngắn (Spot-Check 30s) tránh ngộ nhận năng lực ảo.
+  4. **Phòng thủ chống gian lận & Cá nhân hóa vượt bậc:** AI Socratic Tutor nội bộ gợi mở từng bước + Telemetry nhận diện dán code + Thử thách phản xạ chéo (Spot-Check) + Tính năng Thử thách vượt bậc (Mastery Challenge).
   5. **Chế độ Phỏng vấn Mô phỏng (Mock Technical Interview):** Đóng gói truy vấn, tối ưu hóa và câu hỏi tình huống thành bài thi phỏng vấn thử chân thực.
   6. **Observability & Quản trị 2 tầng:** Giám sát kỹ thuật (độ trễ < 200ms, lỗi sandbox) và giám sát sư phạm (Frustration Heatmap, độ trôi mô hình AI, cảnh báo học viên copy AI).
   7. **Bộ Đánh Giá Năng Lực Đầu Vào (Adaptive Placement Diagnostic):** Giải quyết bài toán Cold-Start bằng bài test nhanh (5-7 câu tại các nút giao DAG) kết hợp lan truyền tiên quyết (Prerequisite Propagation) để khởi tạo chính xác $s_0$, đưa học viên vào đúng ZPD ngay từ bước đầu.
@@ -49,7 +49,13 @@ Trong quá trình thực thi Phase 1 và đầu Phase 2, đã có các sai sót 
   - Toàn bộ database schema trong CI, test và production phải được tạo lập **duy nhất bởi lệnh chính thống `alembic upgrade head`**.
   - Test phải phản ánh trung thực 100% điều kiện thực tế. Nếu test fail, phải truy tìm tận gốc nguyên nhân kiến trúc và sửa đúng nơi, đúng chỗ.
 
-### 🚫 Lỗi 3: Không tuân thủ kỷ luật Git Workflow (Code/Commit trên `main`)
+### 🚫 Lỗi 3: Lỗi Hàng chờ Worker và Event Loop Blocked
+* **Sai sót đã xảy ra:** Không quản lý tốt concurrency khi dùng Web Worker (Race condition kết quả trả về) và dùng hàm `async` gọi mô hình ONNX đồng bộ gây treo Event Loop Backend.
+* **Quy tắc sửa đổi:**
+  - Mọi hook gửi tín hiệu vào Web Worker đều phải đính kèm `queryId` hoặc `uuid` để khớp dữ liệu lúc nhận về.
+  - Bất kỳ tác vụ tính toán CPU-bound nào (như ONNX inference) trong FastAPI đều PHẢI bỏ từ khóa `async` (dùng `def` thuần) để framework tự phân bổ sang Background Threadpool, tuyệt đối không dùng `async` nếu hàm nội tại không chứa lệnh `await`.
+
+### 🚫 Lỗi 4: Không tuân thủ kỷ luật Git Workflow (Code/Commit trên `main`)
 * **Sai sót đã xảy ra:** Làm việc và commit trực tiếp trên nhánh `main`.
 * **Quy tắc sửa đổi:**
   - Không bao giờ được phép code hay commit trực tiếp trên `main`.
@@ -57,19 +63,12 @@ Trong quá trình thực thi Phase 1 và đầu Phase 2, đã có các sai sót 
   - Chạy toàn bộ pre-commit checks, unit tests, linters trên nhánh feature trước.
   - Sau khi kiểm thử thành công, merge nhánh feature vào `main`, push lên origin và kiểm tra CI GitHub Actions.
 
-### 🚫 Lỗi 4: Không tự chủ động kiểm tra và chẩn đoán lỗi (Trông chờ người dùng)
-* **Quy tắc sửa đổi:**
-  - AI Assistant phải tự mình kiểm tra, tự phân tích log, tái hiện bug và tự khắc phục triệt để.
-  - Không coi người dùng là QA tester.
-  - Chỉ thông báo tới người dùng sau khi đã tự verify xong, hoặc khi cần tham vấn quyết định chiến lược/sản phẩm lớn.
-
 ---
 
 ## 3. Trạng Thái Hiện Tại Của Hệ Thống (System Status Checkpoint)
 
-* **Git Branch hiện tại:** `feat/task-5-db-schema` (đã merge đồng bộ với `main`).
-* **Commit mới nhất:** `d275da5` (`refactor(tests): remove create_all fixture to strictly enforce Alembic migration validation`).
-* **Trạng thái Working Tree:** Sạch sẽ (`working tree clean`), không có file rác hay uncommitted changes.
+* **Hoạt động gần nhất:** Đã fix triệt để 6 lỗi kỹ thuật ẩn bằng phân tích tĩnh (Worker Race Condition, FastAPI Thread block, Database index/default).
+* **Git Branch hiện tại:** `main` (Chuẩn bị mở nhánh mới `feat/task-6-knowledge-graph`).
 * **Trạng thái CI/CD GitHub Actions (Run ID: `34342493670`):** **Xanh 100% (5/5 Quality Gates)**:
   - Gate 1: Lint & Format (Ruff, ESLint, Prettier) -> ✅ Success
   - Gate 2: Typecheck (Mypy strict, TypeScript `tsc --noEmit`) -> ✅ Success

@@ -1,53 +1,49 @@
 # Implementation Plan: Ascend LMS - "Rise above limits"
 
 ## Overview
-Dự án LMS Cá nhân hóa với SQL (Đồ án 15 tuần). Việc lập kế hoạch tuân thủ triết lý Vertical Slicing và Fail-fast: Xử lý triệt để các rủi ro kiến trúc lớn nhất ngay từ Tuần 1, sau đó phát triển dần các API và UI. Kế hoạch này bám sát 100% vào 8 bản đặc tả (Spec) của dự án.
+Dự án LMS Cá nhân hóa với SQL (Đồ án 15 tuần). Kế hoạch đã được **điều chỉnh lại (Re-planned)** tuân thủ triệt để triết lý **Vertical Slicing** (cắt dọc tính năng) theo `planning-and-task-breakdown` skill, thay vì cắt ngang (Horizontal) như trước. Các rủi ro kỹ thuật (Phase 1) và Database (Task 5) đã hoàn tất. Phần còn lại sẽ được build end-to-end từng luồng. Kế hoạch bám sát 100% vào 13 bản đặc tả `.onion`.
 
 ## Architecture Decisions
-- **Tránh PyTorch trên Backend:** Huấn luyện RL offline, export ra `.onnx` và load bằng `onnxruntime` trên FastAPI để đáp ứng RAM 4GB của VPS.
+- **Vertical Slicing (MỚI):** Nhóm các module Frontend, Backend, AI lại thành từng cụm tính năng hoàn chỉnh có thể test end-to-end ngay (Onboarding -> Workspace -> AI Recommender -> Anti-Cheat).
 - **Thực thi SQL Client-Side:** Tránh hoàn toàn việc gọi Backend để chấm kết quả SQL.
-- **Vertical Slicing:** Build tính năng từ Data Layer -> API -> Frontend UI để đảm bảo không bị nghẽn (Block) lẫn nhau.
-- **Micro-Containerized Monolith:** Triển khai qua Docker Compose (Caddy + FastAPI + NextJS) với CI/CD tự động 5 cổng.
+- **Tránh PyTorch trên Backend:** Huấn luyện RL offline, export ra `.onnx` và load bằng `onnxruntime`.
 
 ## Task List
 
-### Phase 1: Triệt Tiêu Rủi Ro (High-Risk Spikes) - Tuần 1-2
-- [x] Task 1: Khởi tạo Base Project, Git Workflow (Husky/Lint-staged) & `CONSTRAINTS.md`.
-- [x] Task 2: Thiết lập Docker Compose & luồng CI/CD GitHub Actions (Quality Gates).
-- [x] Task 3: Spike/PoC - Chạy `sql.js` bên trong Web Worker của React.
-- [x] Task 4: Spike/PoC - API FastAPI load file `.onnx` và trả về kết quả Inference.
+### Phase 1: Triệt Tiêu Rủi Ro (High-Risk Spikes) - [HOÀN THÀNH]
+- [x] Task 1-4: Base Project, Docker, CI/CD, Spike WASM, Spike ONNX.
+- [x] Task 5: Database Schema & Alembic Migrations.
 
-### Phase 2: Logic Lõi & Chấm Điểm (Tuần 3-5)
-- [x] Task 5: Dựng Database Schema & Alembic (Đầy đủ các bảng Telemetry, Diagnostic, SpotCheck).
-- [ ] Task 6: Module parse đồ thị DAG & Thuật toán lan truyền tiên quyết ($s_0$).
-- [ ] Task 7: Trình chấm điểm AST (`sqlglot`) và `EXPLAIN QUERY PLAN`.
+### Phase 2: Onboarding & Knowledge Graph (Vertical Slice 1)
+- [ ] Task 6: Knowledge Graph Parser & DAG Engine (Backend)
+- [ ] Task 7: Diagnostic Propagation Algorithm (Backend)
+- [ ] Task 8: Onboarding API & Guest Auth (Backend)
+- [ ] Task 9: Onboarding UI & Visual Skill Tree (Frontend)
 
-### Phase 3: AI Simulator & Training (Tuần 6-9)
-- [ ] Task 8: Lập trình môi trường Gymnasium (Toán BKT & Ebbinghaus).
-- [ ] Task 9: Code Action Masking & Reward Function.
-- [ ] Task 10: Train mô hình MaskablePPO & Export ra ONNX.
+### Phase 3: Core Workspace & SQL Engine (Vertical Slice 2)
+- [ ] Task 10: SQLite WASM Worker & IndexedDB Sync (Frontend)
+- [ ] Task 11: SQL Workspace UI & Monaco Editor (Frontend)
+- [ ] Task 12: AST & EXPLAIN Grader (Backend)
+- [ ] Task 13: Submission API & Integration (Backend/Frontend)
 
-### Phase 4: LMS Backend API (Tuần 10-11)
-- [ ] Task 11: CRUD Auth (Guest/Register/Login/Convert).
-- [ ] Task 12: API Khuyến nghị, Chấm điểm (BKT Updater) & XAI Rationale.
-- [ ] Task 13: API Onboarding Diagnostic (Adaptive Placement Test & Calibration).
-- [ ] Task 14: Telemetry Background Tasks, Spot-Check Trigger & Socratic Hint.
+### Phase 4: AI Recommender Engine (Vertical Slice 3)
+- [ ] Task 14: Cognitive Simulator Gym Env (Backend)
+- [ ] Task 15: RL Training & ONNX Export (Backend)
+- [ ] Task 16: Recommendation API & XAI Rationale (Backend)
+- [ ] Task 17: XAI UI & Progressive Hints Drawer (Frontend)
 
-### Phase 5: Next.js UI (Tuần 12-14)
-- [ ] Task 15: Vẽ Skill Tree bằng `@xyflow/react`.
-- [ ] Task 16: Editor Code bằng `Monaco` & Progressive Hints.
-- [ ] Task 17: Màn hình Onboarding Placement Test & Dashboard học tập.
-- [ ] Task 18: Tích hợp Telemetry Middleware & Modal Spot-Check 30s.
-- [ ] Task 19: Admin Dashboard (Heatmap, Model Drift) & Mock Interview Mode.
+### Phase 5: Anti-Cheat & Telemetry (Vertical Slice 4)
+- [ ] Task 18: Telemetry Collection & Paste Detection (Frontend/Backend)
+- [ ] Task 19: Spot-Check Guard API & UI Lock (Frontend/Backend)
 
-### Phase 6: Benchmark & Báo cáo (Tuần 15)
-- [ ] Task 20: Tối ưu LCP, Load test API & Triển khai Zero-Downtime lên VPS.
-- [ ] Task 21: Cập nhật HLD, LLD & Finalize Báo cáo Word.
+### Phase 6: Polish & Dashboard
+- [ ] Task 20: Admin Dashboard (Heatmap & Model Drift)
+- [ ] Task 21: Mock Technical Interview Mode
+- [ ] Task 22: Performance LCP & Final Deploy
 
 ## Risks and Mitigations
 | Risk | Impact | Mitigation |
 |------|--------|------------|
-| ONNX Inference quá chậm ($>100$ms) | High | Đã đưa vào Phase 1 làm sớm. Khắc phục: Ép Float16 quantization. |
-| Web Worker ăn RAM gây crash | High | Đã đưa vào Phase 1. Khắc phục: Ràng buộc Seed Data dưới 100 dòng. |
-| CI/CD Pipeline lỗi gây nghẽn Merge | Medium | Xây dựng ngay từ Task 2, mock các test cases cơ bản để thông luồng. |
 | Trễ deadline do UI quá phức tạp | Medium | Dùng sẵn `shadcn/ui` Tailwind để tránh sa đà vào CSS. |
+| RL Training không hội tụ | High | Dùng MaskablePPO, action masking 162 actions chặn invalid moves. |
+| Gian lận vượt rào Spot-Check | Medium | Spot-Check UI dùng z-index cao nhất, chặn tắt modal. |

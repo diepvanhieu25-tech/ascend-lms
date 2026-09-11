@@ -148,19 +148,19 @@ class TwoStageRecommenderService:
         
         return exercise, xai_card
 
-    def _generate_xai_rationale(self, concept_id: str, mode: str, state_vector: np.ndarray) -> XAICard:
-        if mode == "PRACTICE_REVIEW":
+    def _generate_xai_rationale(self, concept_id: str, exercise: Exercise, state_vector: np.ndarray) -> XAICard:
+        if exercise.mode.value == "PRACTICE_REVIEW":
             return XAICard(
                 pedagogical_mode="PRACTICE_REVIEW",
                 headline="Ôn tập củng cố trí nhớ ngắt quãng",
                 rationale_message=f"Chỉ số ghi nhớ của bạn về {concept_id} đang có xu hướng giảm. Bài tập này giúp kích hoạt lại trí nhớ dài hạn trước khi quên.",
-                target_metrics={"mode": mode}
+                target_metrics={"mode": exercise.mode.value}
             )
         return XAICard(
             pedagogical_mode="LEARN_NEW",
             headline="Mở rộng kỹ năng mới theo Vùng phát triển gần",
             rationale_message=f"Bạn đã thành thạo các kiến thức tiên quyết! Đây là thời điểm lý tưởng nhất để chinh phục {concept_id}.",
-            target_metrics={"mode": mode}
+            target_metrics={"mode": exercise.mode.value}
         )
 ```
 

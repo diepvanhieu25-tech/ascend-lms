@@ -103,7 +103,13 @@ class ASTAnalyzer:
         clauses_found: List[str] = []
 
         try:
-            expression = sqlglot.parse_one(sql_query, read=self.dialect)
+            expressions = sqlglot.parse(sql_query, read=self.dialect)
+            if len(expressions) > 1:
+                return ASTCheckResult(
+                    passed=False, 
+                    violations=[ASTViolation(rule_type="MULTIPLE_STATEMENTS", message="Chỉ được phép thực thi 1 câu lệnh SQL duy nhất.")]
+                )
+            expression = expressions[0]
         except Exception as e:
             return ASTCheckResult(
                 passed=False, 
@@ -181,7 +187,7 @@ class ExplainPlanAnalyzer:
             return {
                 "passed": False,
                 "score": 0.5,
-                "feedback": "Câu truy vấn đang quét toàn bảng (SCAN TABLE). Hãy tạo hoặc tận dụng INDEX để chuyển sang SEARCH TABLE."
+                "feedback": "Câu truy vấn đang quét toàn bảng (SCAN TABLE). Hãy tạo hoặc tận dụng INDEX để chuyển sang SEARCH TABLE. (Lưu ý: Nếu bảng < 10,000 dòng, bắt buộc phải dùng mệnh đề INDEXED BY để ép SQLite dùng Index)."
             }
         return {
             "passed": True,

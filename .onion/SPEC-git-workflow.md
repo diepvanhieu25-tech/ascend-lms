@@ -8,7 +8,7 @@ Do đây là dự án solo 15 tuần với tốc độ cao, tuyệt đối **KH�
 
 - Trục chính `main` luôn trong trạng thái có thể deploy (Always deployable).
 - Mọi tính năng, lỗi đều được làm trên **Short-lived Feature Branches** (Nhánh ngắn hạn, tuổi thọ tối đa 1-2 ngày) và merge lại `main` ngay.
-- Nếu tính năng chưa hoàn thiện nhưng cần merge để tránh "thiu" code (Merge conflict), ẩn nó sau **Feature Flags** trên UI, chứ không ngâm nhánh.
+- Nếu tính năng chưa hoàn thiện nhưng cần merge để tránh "thiu" code (Merge conflict), ẩn nó sau **Feature Flags (dùng biến môi trường .env ở Next.js)**, chứ không ngâm nhánh.
 
 Quy ước đặt tên nhánh:
 - `feat/ten-chuc-nang` (VD: `feat/wasm-worker`)

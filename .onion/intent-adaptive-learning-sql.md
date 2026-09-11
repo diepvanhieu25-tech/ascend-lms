@@ -24,4 +24,4 @@
 * **Out of scope (Phạm vi không làm):**
   - Không nạp dữ liệu bài tập cho các môn học khác ngoài SQL trong phạm vi đồ án lần này.
   - Không tự phát triển engine RDBMS riêng (dùng cơ chế sandbox an toàn trên SQLite WebAssembly / in-memory).
-  - Không huấn luyện RL online từ số 0 trên người dùng thật (dùng offline policy từ simulator + logging telemetry để đánh giá ngoại tuyến).
+  - Không huấn luyện RL online từ số 0 trên người dùng thật. Bắt buộc dùng **Pre-trained Static RL Policy** (Huấn luyện hoàn tất trên Simulator trước khi deploy). Ở môi trường thực tế, hệ thống chỉ đo lường độ lệch (Model Drift) để chứng minh tính chuẩn xác của Simulator so với người thật.

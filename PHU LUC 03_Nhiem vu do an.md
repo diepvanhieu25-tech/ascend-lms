@@ -86,8 +86,8 @@ Toàn bộ tài liệu lý thuyết, tiêu chuẩn kỹ thuật và nguồn dữ
 * **Chương 2: Phân tích thiết kế hệ thống:**  
   - Phân tích yêu cầu chức năng (Use Cases cho Học viên, Giảng viên, AI Agent) và yêu cầu phi chức năng (Độ trễ < 50ms, độ tin cậy, an toàn sandbox).  
   - Thiết kế kiến trúc tổng thể phần mềm theo mô hình C4 (Context, Container, Component).  
-  - Thiết kế Đồ thị tri thức SQL (18 khái niệm cốt lõi) và ngân hàng bài tập kèm bẫy biên (NULL, duplicates).  
-  - Thiết kế Bộ đánh giá năng lực đầu vào (Adaptive Diagnostic Placement Test & Calibration Mini-Check 30s) và thuật toán lan truyền tiên quyết trên DAG giải quyết bài toán Khởi đầu Lạnh (Cold-Start).  
+  - Thiết kế Đồ thị tri thức SQL (18 khái niệm cốt lõi) và quy trình ứng dụng mô hình ngôn ngữ lớn (LLM) tự động hóa sinh dữ liệu bài tập (Lược đồ, Dữ liệu mồi, bẫy biên).  
+  - Thiết kế Bộ đánh giá năng lực đầu vào (Adaptive Diagnostic Placement Test) giải quyết bài toán Khởi đầu lạnh (Cold-Start), và cơ chế Thử thách vượt bậc (Mastery Challenge) cùng câu hỏi kiểm tra chéo (Spot-Check).  
   - Thiết kế mô hình toán học MDP: Không gian trạng thái $s_t \in \mathbb{R}^{41}$, không gian hành động rời rạc 162 actions với Action Masking, và hàm phần thưởng đa mục tiêu cân bằng (Mastery, Retention, ZPD, Penalty).  
   - Thiết kế mô hình dữ liệu (ERD) và cơ sở dữ liệu quan hệ PostgreSQL.  
   - Thiết kế biểu đồ tuần tự (Sequence Diagrams) cho các luồng tương tác cốt lõi (Onboarding, Recommendation, Submission, Telemetry).  
@@ -119,7 +119,8 @@ Toàn bộ tài liệu lý thuyết, tiêu chuẩn kỹ thuật và nguồn dữ
 2. **Bộ mã nguồn phần mềm hoàn chỉnh:**
    - Mã nguồn môi trường mô phỏng nhận thức `SQLStudentEnv` chuẩn Gymnasium.
    - Mã nguồn mô hình RL (MaskablePPO) và pipeline thực nghiệm đối chuẩn.
-   - Bộ mã nguồn Backend FastAPI và Frontend Next.js (bao gồm Bộ đánh giá năng lực đầu vào, Monaco Editor, WASM sandbox, AST grader, Visual Skill Tree, và Mock Interview).
+   - Bộ công cụ (LLM Pipeline) tự động sinh lược đồ, test case và dữ liệu mồi.
+   - Bộ mã nguồn Backend FastAPI và Frontend Next.js (Bộ đánh giá năng lực, Monaco Editor, WASM Sandbox, AST Grader xử lý trên Backend, Cây kỹ năng trực quan, Cơ chế Thử thách vượt bậc).
    - Bộ cấu hình triển khai hạ tầng Docker, Docker Compose, Nginx và CI/CD GitHub Actions.
 3. **Báo cáo đối chuẩn mô hình AI:** Bảng số liệu, biểu đồ hội tụ reward và kết quả kiểm định thống kê $t$-test ($p < 0.05$).
 4. **Hệ thống Web LMS hoạt động trực tiếp:** Nền tảng chạy thực tế trên môi trường Production phục vụ học tập thích ứng môn SQL.

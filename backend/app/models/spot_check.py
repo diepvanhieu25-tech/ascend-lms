@@ -74,7 +74,6 @@ class SpotCheckAttempt(Base):
         ForeignKey("submissions.id", ondelete="CASCADE"),
         nullable=False,
         unique=True,
-        index=True,
     )
     spot_check_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True),

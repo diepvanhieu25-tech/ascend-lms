@@ -336,7 +336,8 @@ Lấy bài tập tiếp theo được mô hình Two-Stage RL đề xuất, kèm 
         "description": "Viết truy vấn kết nối bảng `orders` và `customers`...",
         "schema_ddl": "CREATE TABLE customers (id INT, name TEXT, is_active INT);\nCREATE TABLE orders (id INT, customer_id INT, amount DECIMAL);",
         "seed_data_sql": "INSERT INTO customers VALUES (1, 'Alice', 1), (2, 'Bob', 0), (3, 'Charlie', NULL);\nINSERT INTO orders VALUES (101, 1, 50.0), (102, 3, 30.0), (103, 999, 10.0);",
-        "expected_columns": ["id", "customer_name", "amount"]
+        "expected_columns": ["id", "customer_name", "amount"],
+        "expected_row_count": 1
       },
       "xai_card": {
         "pedagogical_mode": "PRACTICE_REVIEW",
@@ -391,8 +392,12 @@ Nộp lời giải SQL của người học. Backend chạy kiểm định AST, 
     "telemetry": {
       "time_spent_seconds": 45,
       "keystroke_count": 128,
+      "keystroke_events": [
+        { "key": "S", "time_diff_ms": 120 },
+        { "key": "E", "time_diff_ms": 110 }
+      ],
       "paste_events": [
-        { "timestamp_ms": 1240, "char_count": 0 }
+        { "timestamp_ms": 1240, "char_count": 50 }
       ],
       "tab_switches": 0
     }
@@ -440,6 +445,28 @@ Nộp lời giải SQL của người học. Backend chạy kiểm định AST, 
         ],
         "time_limit_seconds": 30
       }
+    }
+  }
+  ```
+
+#### `POST /api/v1/exercises/spot-check`
+Nộp đáp án câu hỏi bẫy phản xạ (Spot-Check) để mở khóa tiếp lộ trình.
+
+- **Request Body:**
+  ```json
+  {
+    "spot_check_id": "spot_12345",
+    "selected_option_index": 1,
+    "time_spent_seconds": 12
+  }
+  ```
+- **Response `200 OK`:**
+  ```json
+  {
+    "success": true,
+    "data": {
+      "is_correct": true,
+      "message": "Xác thực thành công, tiếp tục học tập!"
     }
   }
   ```

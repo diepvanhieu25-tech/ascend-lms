@@ -55,9 +55,9 @@ class TelemetryLog(Base):
     )
     min_paste_duration_ms: Mapped[int] = mapped_column(
         Integer,
-        default=0,
+        default=-1,
         nullable=False,
-        comment="Smallest duration measured between paste strokes (0ms = instant GenAI)",
+        comment="Smallest duration measured between paste strokes (-1 = no paste, 0ms = instant GenAI)",
     )
     tab_switches: Mapped[int] = mapped_column(
         Integer,

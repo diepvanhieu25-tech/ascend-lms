@@ -48,3 +48,14 @@ Luật Bánh cóc: Các con số này có thể thấp ở ngày đầu tiên, n
 | ID | Rule | Path | Reason | Owner | Expires |
 |----|------|------|--------|-------|---------|
 | W1 | `no-explicit-any` | `frontend/src/legacy/` | Mặc định không dùng `any`, ngoại trừ khi gọi hàm Web Worker thô | @diepvanhieu | N/A |
+
+## Agent Interaction & Workflow Rules (Luật Dành Riêng Cho AI Agent)
+
+Hệ thống Onion Agents khi làm việc trong dự án này **BẮT BUỘC** tuân thủ các quy tắc phối hợp sau:
+
+1. **Lỗi Thực Thi Phải Hỏi Ý Kiến:** Khi công cụ bị lỗi (vd: `run_command` bị *permission denied* hoặc không thể chạy bash script), Agent **tuyệt đối không được đoán mò kết quả**. Phải dừng lại và báo cáo/hỏi Người dùng (User) ngay lập tức.
+2. **Kỷ Luật Review & Test Sau Khi Code:** Code xong **BẮT BUỘC** phải rà soát mã nguồn. Đề xuất User bật `/test` và `/review` để kiểm tra độ chuẩn xác của code so với thiết kế. Không bao giờ báo cáo "Hoàn thành" khi chưa qua rà soát.
+3. **Quyền Phủ Quyết Của User (No Auto-Merge):** Không được tự ý Pull Request code từ nhánh feature vào `main` nếu User chưa tự tay kiểm tra và nghiệm thu.
+4. **Viết Code Chuẩn Xác (No Silly Code):** Phải liên tục áp dụng skill `source-driven-development` để bám sát tài liệu gốc, tránh tình trạng viết code "ngớ ngẩn", cố tình bắt lỗi (try-catch rỗng) khiến chức năng thì chết mà console không báo lỗi.
+5. **Kiểm Thử Trình Duyệt Thật:** Bắt buộc sử dụng `browser-testing-with-devtools` để mở Chrome DevTools, soi trực tiếp lỗi Console, DOM, Network thay vì chỉ nhìn code rồi đoán mò lý do giao diện hỏng.
+6. **Điều Phối Đa Kỹ Năng:** Chủ động sử dụng `using-onion-skills` liên tục để gọi các skill phù hợp ra hỗ trợ cho từng ngữ cảnh khó.

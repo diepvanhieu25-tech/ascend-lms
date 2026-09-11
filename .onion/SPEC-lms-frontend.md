@@ -23,7 +23,7 @@ Module `lms-frontend` phụ trách **toàn bộ giao diện người dùng và t
      - **Màu Xám:** Chưa mở khóa (Chưa đạt điều kiện tiên quyết $K_{\text{prereq}} < 0.7$).
 3. **Không Gian Luyện Code 3 Cột Không Ma Sát (Three-Panel Workspace):**
    - **Cột Trái:** Đề bài, gợi ý bẫy dữ liệu và Bộ xem cấu trúc bảng tương tác (Interactive Schema Viewer - click vào tên cột/tên bảng là tự động copy chèn vào code).
-   - **Cột Phải Trên:** Trình soạn thảo **Monaco Editor** hỗ trợ highlight cú pháp SQL, gợi ý phím tắt chuẩn `Ctrl + Enter` (hoặc `Cmd + Enter`), và tự động lưu nháp code mỗi 2s vào `localStorage`.
+   - **Cột Phải Trên:** Trình soạn thảo **Monaco Editor** hỗ trợ highlight cú pháp SQL, gợi ý phím tắt chuẩn `Ctrl + Enter` (hoặc `Cmd + Enter`), và tự động lưu nháp code mỗi 2s vào `IndexedDB` (để tránh giới hạn 5MB của localStorage).
    - **Cột Phải Dưới:** Bộ chạy truy vấn tức thì qua Web Worker SQLite WASM ($< 20$ms) kèm **Trình so khớp kết quả Diff Table** trực quan (Xanh: khớp, Đỏ: dòng/cột thiếu hoặc thừa).
 4. **Trợ Lý Socratic & Thẻ Giải Thích Minh Bạch (XAI Card & Progressive Hints):**
    - **Thẻ XAI (Explainable AI Card):** Minh bạch lý do sư phạm vì sao mô hình RL đề xuất bài tập này.
@@ -99,7 +99,7 @@ frontend/
 │   ├── hooks/
 │   │   ├── useSQLiteWorker.ts           # Hook giao tiếp Web Worker chạy sql.js client-side
 │   │   ├── useTelemetry.ts              # Hook bắt sự kiện gõ phím, dán code, chuyển tab
-│   │   └── useAutoSaveDraft.ts          # Hook lưu nháp code vào localStorage mỗi 2s
+│   │   └── useAutoSaveDraft.ts          # Hook lưu nháp code vào IndexedDB mỗi 2s
 │   ├── lib/
 │   │   ├── api-client.ts                # Fetch wrapper gọi FastAPI Backend v1 kèm JWT
 │   │   └── error-explainer.ts           # Dịch lỗi SQLite sang tiếng Việt thân thiện
@@ -165,7 +165,7 @@ export function useSQLiteWorker() {
         workerRef.current.addEventListener('message', handleMessage);
         workerRef.current.postMessage({
           type: 'EXECUTE',
-          payload: { sql, ddl, seedSql }
+          payload: { sql, ddl, seedSql, isInit: false } // isInit=true chỉ gọi lúc load bài
         });
       });
     },
@@ -243,7 +243,7 @@ export const ConceptNode = memo(({ data }: { data: ConceptNodeData }) => {
 
 - **Always:**
   - Chạy toàn bộ câu truy vấn SQL trong Web Worker, tuyệt đối không chạy trên Main UI Thread.
-  - Tự động lưu nháp code học viên vào `localStorage` để chống mất dữ liệu khi mất mạng hoặc reload trang. **Bắt buộc có cơ chế Hydration:** Khi F5/Reload, nếu có draft code, phải gửi lại `schema_ddl` và `seed_data_sql` cho Web Worker để tái tạo lại CSDL in-memory trước khi cho phép chạy code.
+  - Tự động lưu nháp code học viên vào `IndexedDB` để chống mất dữ liệu khi mất mạng hoặc reload trang. **Bắt buộc có cơ chế Hydration:** Khi F5/Reload, nếu có draft code, phải gửi lại `schema_ddl` và `seed_data_sql` cho Web Worker để tái tạo lại CSDL in-memory. Tuy nhiên, chỉ nạp DDL và Seed data **DUY NHẤT 1 LẦN** lúc khởi tạo bài tập, các lần sinh viên bấm `Chạy code` sau đó chỉ thực thi `sql` để đảm bảo độ trễ <20ms.
   - Hiển thị Thẻ giải thích XAI minh bạch mỗi khi có bài tập mới do AI đề xuất.
 - **Ask first:**
   - Thay đổi thư viện Cây kỹ năng (Mặc định: `@xyflow/react`).

@@ -50,9 +50,10 @@ Sử dụng **GitHub Actions** (`.github/workflows/ci.yml`). Bất kỳ Pull Req
 2. **Action CD:**
    - GitHub Actions SSH vào VPS Production (qua `appleboy/ssh-action`).
    - Kéo code mới nhất (`git pull`).
+   - Tải file model `rl_model.onnx` mới nhất từ S3 hoặc Release Tag.
    - Xây dựng lại container: `docker-compose build`.
-   - Khởi động lại hệ thống không gián đoạn: `docker-compose up -d --no-deps --build`.
-   - Chạy Database Migration tự động: `docker exec -it fastapi_app alembic upgrade head`.
+   - Khởi động lại hệ thống (Chấp nhận downtime vài giây do load RAM): `docker-compose up -d --no-deps --build`.
+   - Chạy Database Migration tự động (không dùng cờ -it): `docker exec fastapi_app alembic upgrade head`.
 
 ## 5. Quản Lý Môi Trường (Environment Management)
 
@@ -66,5 +67,5 @@ Tuyệt đối KHÔNG lưu file `.env` trên Git.
 Nếu bản Deploy làm sập hệ thống (500 Error):
 1. **Mức Code:** Sử dụng Github Action Rollback workflow (thực thi `git revert` commit gần nhất).
 2. **Mức Database:** Nếu Alembic Migration phá hỏng DB, lập tức chạy lệnh downgrade: 
-   `docker exec -it fastapi_app alembic downgrade -1`.
+   `docker exec fastapi_app alembic downgrade -1`.
 3. Bản Backup Database (SQL Dump) tự động chạy mỗi 12h đêm và đẩy lên AWS S3 (hoặc Google Drive) thông qua cronjob của VPS.

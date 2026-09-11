@@ -104,6 +104,7 @@ class ProgressiveHints(BaseModel):
 
 
 class SpotCheckQuestion(BaseModel):
+    id: str = Field(..., pattern=r"^spot_[a-z0-9_]+$")
     question: str = Field(..., description="Câu hỏi trắc nghiệm phản xạ 30s giải thích bản chất")
     options: List[str] = Field(..., min_length=2, max_length=4)
     correct_option_index: int = Field(..., ge=0)
@@ -137,6 +138,8 @@ class Exercise(BaseModel):
     mode: PedagogicalMode
     title: str
     description: str
+    expected_columns: List[str] = Field(default_factory=list, description="Các cột kết quả để Client so sánh")
+    expected_row_count: int = Field(default=0)
     schema_ddl: str = Field(..., description="Câu lệnh CREATE TABLE cho sandbox")
     seed_data_sql: str = Field(..., description="INSERT dữ liệu mẫu có bẫy NULL và dòng trùng lặp")
     solution_sql: str = Field(..., description="Câu truy vấn mẫu chuẩn mực")
@@ -184,8 +187,7 @@ graph TD
     c12 --> c16[sql_cte_basic]
     c10 --> c17[sql_window_ranking]
     c10 --> c18[sql_window_lead_lag]
-    c16 --> c19[sql_index_optimization]
-    c6 --> c19
+
 ```
 
 ---

@@ -103,7 +103,7 @@ Tổng không gian rời rạc: $18 \times 3 \times 3 = 162$ discrete actions.
   1. $c_k$ có điều kiện tiên quyết mà $K_{\text{prereq}} < 0.7$ (Chưa mở khóa kiến thức nền).
   2. Mode là `LEARN_NEW` nhưng $K_{c_k} \ge 0.85$ (Đã thành thạo rồi thì không thể "học mới").
   3. Mode là `PRACTICE_REVIEW` nhưng chưa từng học $c_k$ ($K_{c_k} \le P(L_0)$).
-- **Chống Deadlock (Terminal State):** Khi toàn bộ $N$ concepts đều đạt $K_i \ge 0.85$, toàn bộ actions có thể bị mask out (sum of mask = 0). Lúc này, `env.step` phải trả về `done = True` ngay lập tức để kết thúc episode thay vì crash mô hình.
+- **Chống Deadlock (Terminal State):** Khi toàn bộ $N$ concepts đều đạt $K_i \ge 0.85$ và $M_i \ge 0.9$, tập action mới hết giá trị. Tránh infinite loop, cấu hình `max_steps_per_episode` để ngắt.
 
 ### 4.3. Hàm Phần Thưởng (Reward Function $\mathcal{R}$)
 
@@ -151,7 +151,7 @@ class SQLStudentEnv(gym.Env):
    - Chạy hàm `gymnasium.utils.env_checker.check_env(env)` để kiểm tra 100% tuân thủ giao thức reset, step, observation/action space boundaries.
 2. **BKT Monotonicity Test:**
    - Khi học viên trả lời đúng bài tập về concept $A$, xác suất $P(L_A)$ phải tăng đơn điệu.
-   - Khi học viên trả lời sai, $P(L_A)$ phải giảm nhưng không tụt thấp hơn xác suất đoán mò $P(G)$.
+   - Khi học viên trả lời sai, $P(L_A)$ phải giảm và tiệm cận về 0 (không bị chặn dưới bởi xác suất đoán mò $P(G)$).
 3. **Ebbinghaus Decay Test:**
    - Trải qua 10 bước mô phỏng không tương tác với concept $A$, $M_A(t)$ phải suy giảm theo hàm mũ rõ rệt.
 4. **Action Masking Integrity Test:**

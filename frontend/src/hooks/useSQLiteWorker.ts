@@ -50,8 +50,10 @@ export function useSQLiteWorker() {
           });
         }
 
+        const queryId = crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2);
+
         const handleMessage = (event: MessageEvent) => {
-          if (event.data.type === 'QUERY_RESULT') {
+          if (event.data.type === 'QUERY_RESULT' && event.data.payload?.queryId === queryId) {
             worker.removeEventListener('message', handleMessage);
             resolve(event.data.payload);
           }
@@ -60,7 +62,7 @@ export function useSQLiteWorker() {
         worker.addEventListener('message', handleMessage);
         worker.postMessage({
           type: 'EXECUTE',
-          payload: { sql, ddl, seedSql },
+          payload: { sql, ddl, seedSql, queryId },
         });
       });
     },

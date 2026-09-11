@@ -11,7 +11,9 @@
 
 Module `rl-engine` là **trái tim học thuật và trí tuệ nhân tạo** của toàn bộ đề tài tốt nghiệp:
 1. **Thuật toán Học tăng cường (Reinforcement Learning):** Huấn luyện mô hình RL Macro Recommender ứng dụng thuật toán **`MaskablePPO`** (từ `sb3-contrib` dựa trên nền tảng `Stable-Baselines3`) tương tác trực tiếp với môi trường giả lập nhận thức `SQLStudentEnv`.
-2. **Cơ chế Action Masking Động ($M(s_t) \in \{0, 1\}^{162}$):** Ngăn chặn hoàn toàn việc Agent gợi ý các kỹ năng nhảy cóc khi chưa mở khóa tiên quyết trên Đồ thị tri thức DAG, hoặc gợi ý học mới một kỹ năng mà học viên đã thành thạo ($K_i \ge 0.85$).
+2. **Cơ chế Action Masking Động ($M(s_t) \in \{0, 1\}^{162}$):** Ngăn chặn hoàn toàn việc Agent gợi ý các kỹ năng nhảy cóc khi chưa mở khóa tiên quyết trên Đồ thị tri thức DAG, hoặc gợi ý học mới một kỹ năng mà học viên đã thành thạo ($K_i \ge 0.85$). 
+   - **Quy tắc Action Mapping:** $162$ hành động ứng với $18$ concepts $\times$ $3$ difficulties $\times$ $3$ modes. `Index = concept_idx * 9 + difficulty_idx * 3 + mode_idx`. Danh sách Concept sắp xếp cố định theo mảng (không theo alphabet).
+   - **Diagnostic Leakage Fix:** Hành động có `mode = DIAGNOSTIC_QUIZ` sẽ query bảng `SPOT_CHECK`, không query bảng `EXERCISE` để tránh lỗi schema.
 3. **Thực nghiệm Đối chuẩn Khoa học (Benchmarking Pipeline):**
    - Chạy mô phỏng 100.000 episodes trên 3 nhóm học viên ảo (Fast, Average, Struggling Learner).
    - So sánh trực tiếp mô hình RL với 3 Baselines: **Fixed Linear** (Lộ trình cố định truyền thống), **Leitner Spaced Repetition** (Ôn tập chu kỳ cố định), và **Rule-Based Heuristic** (Đúng lên lớp, sai lặp lại).

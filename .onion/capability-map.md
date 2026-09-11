@@ -1,7 +1,7 @@
 # Capability Map: Adaptive Learning SQL (RL-Driven Personalization LMS)
 
 > **Tài liệu điều phối kiến trúc:** Xác lập ranh giới module, quan hệ phụ thuộc và thứ tự triển khai độc lập theo quy chuẩn `/onion-agents:spec-driven-development`.  
-> **Thời gian tạo:** 2026-09-07 | **Hạn nộp đồ án:** 20/12/2026 (~15 tuần) | **Tác giả:** Solo Developer
+> **Thời gian tạo:** 2026-09-07 | **Hạn nộp đồ án:** 20/12/2026 (~15 tuần) | **Tác giả:** Solo Developer (Kết hợp LLM Pipeline để sinh tự động ngân hàng câu hỏi/seed data số lượng lớn, đảm bảo tính khả thi).
 
 ---
 

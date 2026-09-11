@@ -57,10 +57,14 @@ class ONNXEngine:
 
     def decode_action(self, action_idx: int) -> dict[str, Any]:
         """Decodes discrete action integer (0..161) into macro pedagogical strategy."""
-        concept_idx = action_idx // 9
-        remainder = action_idx % 9
-        difficulty_idx = remainder // 3
-        mode_idx = remainder % 3
+        NUM_DIFFICULTIES = len(DIFFICULTY_MAP)
+        NUM_MODES = len(LEARNING_MODE_MAP)
+        STRIDE = NUM_DIFFICULTIES * NUM_MODES
+
+        concept_idx = action_idx // STRIDE
+        remainder = action_idx % STRIDE
+        difficulty_idx = remainder // NUM_MODES
+        mode_idx = remainder % NUM_MODES
 
         concept_name = (
             CONCEPT_NAMES[concept_idx]

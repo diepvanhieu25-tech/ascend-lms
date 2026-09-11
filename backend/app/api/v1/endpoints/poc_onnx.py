@@ -88,7 +88,7 @@ DEFAULT_BASELINE_STATE: list[float] = [
 
 
 @router.get("", response_model=ONNXInferenceResponse)
-async def test_onnx_inference_get() -> ONNXInferenceResponse:
+def test_onnx_inference_get() -> ONNXInferenceResponse:
     """
     Spike/PoC Benchmark: Runs ONNX policy inference on baseline learner state.
     Guarantees latency < 20ms on CPU without PyTorch dependency.
@@ -114,7 +114,7 @@ async def test_onnx_inference_get() -> ONNXInferenceResponse:
 
 
 @router.post("", response_model=ONNXInferenceResponse)
-async def test_onnx_inference_post(request: ONNXInferenceRequest) -> ONNXInferenceResponse:
+def test_onnx_inference_post(request: ONNXInferenceRequest) -> ONNXInferenceResponse:
     """
     Runs ONNX policy inference on custom learner state vector and action mask.
     """

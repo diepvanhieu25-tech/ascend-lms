@@ -55,7 +55,7 @@
 
 - [ ] **Giả định 1 (Học thuật - Must Be True):** Mô hình Two-Stage RL có thể hội tụ trên môi trường giả lập Gymnasium và vượt trội hơn các Baseline (Fixed Linear, Leitner) ít nhất $15-20\%$ về tốc độ đạt thành thạo và độ lưu giữ trí nhớ dài hạn.
   - *Kế hoạch kiểm chứng:* Chạy mô phỏng 100.000 episodes với 3 nhóm học sinh ảo (Fast, Average, Struggling), vẽ biểu đồ hội tụ reward và kiểm định giả thuyết thống kê t-test / p-value.
-- [ ] **Giả định 2 (Kỹ thuật Sandbox - Must Be True):** SQLite WASM (`sql.js`) và bộ phân tích cú pháp AST (`sqlglot`) hoạt động ổn định trên trình duyệt với thời gian phản hồi $< 50$ms mà không gây tràn bộ nhớ.
+- [ ] **Giả định 2 (Kỹ thuật Sandbox - Must Be True):** SQLite WASM (`sql.js`) hoạt động ổn định trên trình duyệt và bộ phân tích cú pháp AST (`sqlglot`) chạy siêu tốc trên Backend với tổng thời gian phản hồi $< 50$ms mà không gây tràn bộ nhớ.
   - *Kế hoạch kiểm chứng:* Dựng prototype Web Worker chạy 50 truy vấn phức tạp liên tục kèm `EXPLAIN QUERY PLAN` để đo benchmark độ trễ và tiêu thụ RAM.
 - [ ] **Giả định 3 (Sư phạm - Anti-Ghost Mastery):** Bộ phát hiện telemetry dán code kết hợp với Spot-Check 30s có thể phân loại chính xác giữa người tự làm và người chép bài từ AI.
   - *Kế hoạch kiểm chứng:* Thử nghiệm trên một nhóm nhỏ sinh viên (5 bạn dùng ChatGPT ngoài vs 5 bạn tự giải) để đo độ chính xác (Precision/Recall) của cảnh báo.

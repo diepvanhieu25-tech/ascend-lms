@@ -30,7 +30,7 @@ self.onmessage = async (event) => {
   }
 
   if (type === 'EXECUTE') {
-    const { sql, ddl, seedSql, wasmUrl } = payload || {};
+    const { sql, ddl, seedSql, wasmUrl, queryId } = payload || {};
     const startTime = performance.now();
 
     try {
@@ -52,6 +52,7 @@ self.onmessage = async (event) => {
         self.postMessage({
           type: 'QUERY_RESULT',
           payload: {
+            queryId,
             columns: first.columns,
             values: first.values,
             executionTimeMs: Math.round(executionTimeMs * 100) / 100,
@@ -61,6 +62,7 @@ self.onmessage = async (event) => {
         self.postMessage({
           type: 'QUERY_RESULT',
           payload: {
+            queryId,
             columns: [],
             values: [],
             executionTimeMs: Math.round(executionTimeMs * 100) / 100,
@@ -72,6 +74,7 @@ self.onmessage = async (event) => {
       self.postMessage({
         type: 'QUERY_RESULT',
         payload: {
+          queryId,
           columns: [],
           values: [],
           executionTimeMs: Math.round(executionTimeMs * 100) / 100,
